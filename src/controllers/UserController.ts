@@ -11,12 +11,21 @@ class UserController {
    * @param res
    * @param next
    */
-  findAll = async (req: Request, res: Response, next: Function) => {
+  /* findAll = async (req: Request, res: Response, next: Function) => {
+    
     res
       .status(200)
       .send(await User.find())
       .end();
     next();
+  }; */
+
+  findAll = async (req: Request, res: Response, next: Function) => {
+    
+    const allUsers = await User.find()
+    res.status(200).json({
+     users : allUsers
+    })
   };
 
   /**
