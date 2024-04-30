@@ -4,8 +4,12 @@ import { setUserRouting } from './routes/userRoutes';
 const app = express();
 const port : number = 8080
 
+app.use(express.json());
+
 setMongoConnection()
 setUserRouting(app)
+
+
 
 app.listen(port,()=>{
     console.log("app working !")
