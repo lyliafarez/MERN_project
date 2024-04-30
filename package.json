@@ -1,0 +1,22 @@
+{
+  "name": "mern_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.3.3"
+  }
+}
