@@ -63,8 +63,21 @@ export default function AdminEventType() {
     <div>
       <div className='new-event-type'>
         <div>
-          <label htmlFor="label">Type de l'évènement</label>
-          <input name="label" type="text" value={newEventType?.label} onChange={e => handleInputChange(e)} />
+          <div className="input flex flex-col w-fit static">
+  <label
+    htmlFor="label"
+    className="text-blue-500 text-xs font-semibold relative top-2 ml-[7px] px-[3px] bg-[#ffffff] w-fit"
+    >Type de l'évènement:</label>
+  <input
+    name="label"
+    type="text"
+    placeholder="Write here..."
+    value={newEventType?.label} 
+    onChange={e => handleInputChange(e)}
+    className="border-blue-500 input px-[10px] py-[11px] text-xs border-2 rounded-[5px] w-[210px] focus:outline-none placeholder:text-black/25"
+  />
+</div>
+
         </div>
         <div>
           <label htmlFor="description">Description de l'évènement</label>
