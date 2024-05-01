@@ -19,13 +19,18 @@ class BackendApi {
 
     async createEventType(eventData: Partial<EventType | null>): Promise<EventType> {
       try {
-        const response = await axios.post<EventType>("http://localhost:8080/eventTypes", eventData);
+        const response = await axios.post<EventType>(
+          "http://localhost:8080/eventTypes",
+          eventData, // Passer les données de l'événement directement au backend
+          { validateStatus: status => status === 201 } // Valider uniquement les réponses avec le code 201 (Created)
+        );
         return response.data;
       } catch (error) {
         console.error("Erreur lors de la création de l'événement : ", error);
         throw error;
       }
     }
+    
     
     
 }

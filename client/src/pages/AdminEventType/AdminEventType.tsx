@@ -26,7 +26,9 @@ export default function AdminEventType() {
   }, [newEventType]);
 
   function createEventType() {
-    backendApi.createEventType(newEventType)
+    backendApi.createEventType(newEventType).then(response => {
+      backendApi.getAllEventTypes().then(tempEvTypes => setEventTypes(tempEvTypes))
+    })
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -65,6 +67,7 @@ export default function AdminEventType() {
           <label htmlFor="description">Description de l'évènement</label>
           <input name="description" type="text" value={newEventType?.description} onChange={e => handleInputChange(e)} />
         </div>
+        <button onClick={ e =>createEventType()}>Ajouter</button>
       </div>
       <div className='list-event-type'>
         {eventTypes.map((eventType, index) => (
