@@ -3,9 +3,7 @@ import { EventType } from "../models/EventType"
 
 class EventTypeController {
     findAll = async (req: Request, res: Response, next: Function) => {
-    
         const allEventTypes = await EventType.find()
-        console.log(allEventTypes)
         res.status(200).json({
          eventtypes : allEventTypes
         })
