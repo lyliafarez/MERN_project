@@ -10,16 +10,25 @@ class EventTypeController {
   };
 
   create = async (req: Request, res: Response, next: Function) => {
-    res
-      .status(201)
-      .send(await EventType.create(req.body))
-      .end();
-    next();
+    try {
+      const eventData = {
+        ...req.body, // Copier les données de la requête
+        //createdBy: req.user._id,
+        createdAt: new Date()
+      };
+      
+      const newEventType = await EventType.create(eventData); // Créer l'événement avec les données modifiées
+  
+      res.status(201).json(newEventType); // Renvoyer la réponse avec le nouvel événement créé
+    } catch (error) {
+      console.error("Erreur lors de la création de l'événement : ", error);
+      res.status(500).json({ error: "Erreur lors de la création de l'événement" }); // Gérer les erreurs
+    }
   };
 
   delete = async (req: Request, res: Response, next: Function) => {
     res
-      .status(200)
+      .status(204)
       .send(await EventType.findByIdAndDelete(req.params.id))
       .end();
     next();

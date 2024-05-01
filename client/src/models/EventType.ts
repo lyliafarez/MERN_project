@@ -1,9 +1,9 @@
 export default class EventType {
-    id: number;
+    id: string;
     label: string;
     description: string;
 
-    constructor(id: number, label: string, description: string){
+    constructor(id: string, label: string, description: string){
         this.id = id;
         this.label = label;
         this.description = description;

@@ -9,5 +9,5 @@ export const setEventTypeRouting = (app) => {
 
   app.get(`/${endpoint}`, eventTypeController.findAll);
   app.post(`/${endpoint}`, eventTypeController.create);
-
+  app.delete(`/${endpoint}/:id`, eventTypeController.delete);
 };
