@@ -1,27 +1,19 @@
 import { useState , useEffect} from 'react'
 import axios from 'axios';
+import { Routes, Route, BrowserRouter} from 'react-router-dom'
+import { backendApi } from './services/BackendApi'
 import User from '../../src/models/User';
 import './App.css'
+import EventType from './pages/AdminEventType/AdminEventType';
 
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
-  useEffect(() => {
-    // Fetch data from the Express server
-    axios.get('http://localhost:8080/users/')
-      .then((response) => {setUsers(response.data.users)
-        console.log(response.data.users)
-      })
-      .catch(error => console.error(error));
-  }, []);
   return (
-    <div>
-      <h1>MERN Stack Todo App</h1>
-      <ul>
-        {users.map((user:User) => (
-          <li key={user._id}>{user.nom}</li>
-        ))}
-      </ul>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/"/>
+        <Route path="/admin/eventtypes" element={<EventType/>}/>
+      </Routes>
+    </BrowserRouter>
   );
  
 }
