@@ -6,43 +6,49 @@ export default function AdminEventType() {
 
   const backendApi = new BackendApi()
   const [eventTypes, setEventTypes] = useState<EventType[] | []>([]);
-  const [newEventType, setNewEventType] = useState<EventType>({
-    id: 0,
+  const [newEventType, setNewEventType] = useState<Partial<EventType>>({
     label: "",
     description: ""
   });
-
+  
 
   useEffect(() => {
     backendApi.getAllEventTypes().then(response => {
       setEventTypes(response)
-      console.log(response)
     })
   }, []);
 
   useEffect(() => {
-    console.log(newEventType)
 
   }, [newEventType]);
 
-  function createEventType() {
-    backendApi.createEventType(newEventType).then(response => {
+  function deleteEventTypeById(eventId: string) {
+    backendApi.deleteEventTypeById(eventId).then(() => {
       backendApi.getAllEventTypes().then(tempEvTypes => setEventTypes(tempEvTypes))
-    })
+    });
+  }  
+
+  function createEventType() {
+    if(newEventType.label && newEventType.label?.length > 2){
+      backendApi.createEventType(newEventType).then(response => {
+        backendApi.getAllEventTypes().then(tempEvTypes => setEventTypes(tempEvTypes))
+        setNewEventType({
+          label: "",
+          description: ""
+        })
+      })
+    }
+
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
     const { name, value } = event.target;
-    console.log(name, value)
     setNewEventType(prevState => {
-      console.log(prevState)
       if (prevState === null || typeof prevState === 'undefined') {
-        console.log("if1")
-        return { id: 0, label: "", description: "" };
+        return { label: "", description: "" };
       }
 
       if (name in prevState) {
-        console.log("if2")
         return {
           ...prevState,
           [name]: value
@@ -52,10 +58,7 @@ export default function AdminEventType() {
     });
   }
 
-
-
-
-
+  
   return (
     <div>
       <div className='new-event-type'>
@@ -71,9 +74,10 @@ export default function AdminEventType() {
       </div>
       <div className='list-event-type'>
         {eventTypes.map((eventType, index) => (
-          <div key={index}>
+          <div key={index} className='flex'>
             <p>{eventType.label}</p>
             <p>{eventType.description}</p>
+            <button onClick={() => deleteEventTypeById(eventType.id)}>Supprimer</button>
           </div>
         ))}
       </div>

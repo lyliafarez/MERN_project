@@ -1,8 +1,4 @@
-import { useState , useEffect} from 'react'
-import axios from 'axios';
 import { Routes, Route, BrowserRouter} from 'react-router-dom'
-import { backendApi } from './services/BackendApi'
-import User from '../../src/models/User';
 import './App.css'
 import EventType from './pages/AdminEventType/AdminEventType';
 
@@ -19,3 +15,4 @@ function App() {
 }
 
 export default App
+      

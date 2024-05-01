@@ -30,6 +30,21 @@ class BackendApi {
         throw error;
       }
     }
+
+    //fonction delete
+    async deleteEventTypeById(eventId: string): Promise<void> {
+      console.log(eventId)
+      try {
+        await axios.delete(
+          `http://localhost:8080/eventTypes/${eventId}`,
+          { validateStatus: status => status === 204 }
+        );
+      } catch (error) {
+        console.error("Erreur lors de la suppression de l'événement : ", error);
+        throw error;
+      }
+    }
+    
     
     
     
