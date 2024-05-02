@@ -1,15 +1,16 @@
 import axios from 'axios';
 import EventType from '../models/EventType';
+import {EventModel }from '../../../backend/src/models/Event';
 
 
 class BackendApi {
     constructor() {
 
     }
-
+/* Event types */
     async getAllEventTypes(): Promise<EventType[]> {
       try {
-        const response = await axios.get<any>( "http://localhost:8080/eventTypes");
+        const response = await axios.get<typeof EventType[]>( "http://localhost:8080/eventTypes");
         return response.data.eventtypes;
       } catch (error) {
         console.error("erreur lors de la récupération des données : ", error);
@@ -45,7 +46,16 @@ class BackendApi {
       }
     }
     
-    
+    /* Events */
+    async getAllEvents(): Promise<typeof EventModel[]> {
+      try {
+        const response = await axios.get( "http://localhost:8080/events");
+        return response.data.events;
+      } catch (error) {
+        console.error("erreur lors de la récupération des données : ", error);
+        throw error;
+      }
+    }
     
     
 }

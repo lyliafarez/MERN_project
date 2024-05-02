@@ -7,13 +7,15 @@ const eventSchema = new mongoose.Schema({
     required : true
  },
  categoryId: {
-    type: Number,
-    required : true
- },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'EventType',
+    nullable : true
+  },
  ownerId: {
-    type: Number,
-    required : true
- },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    nullable : true
+  },
  title : {
     type: String,
     required : true
@@ -23,7 +25,7 @@ const eventSchema = new mongoose.Schema({
     required : true
  },
  date : {
-    type: Date,
+    type: String,
     required : true
  },
  address : {
@@ -44,5 +46,5 @@ const eventSchema = new mongoose.Schema({
  },
 });
 
-export const Event = mongoose.model("Event", eventSchema);
+export const EventModel = mongoose.model("Event", eventSchema);
 
