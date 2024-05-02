@@ -44,10 +44,16 @@ class BackendApi {
         throw error;
       }
     }
-    
-    
-    
-    
+ 
+    async createEvent(eventData: any): Promise<any> {
+      try {
+        const response = await axios.post('http://localhost:8080/events', { ...eventData, isActive: false });
+        return response.data;
+      } catch (error) {
+        console.error('Erreur lors de la création de l\'événement :', error);
+        throw error;
+      }
+    }  
 }
 
 export default BackendApi

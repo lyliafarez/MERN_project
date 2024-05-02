@@ -4,15 +4,15 @@ import mongoose from "mongoose";
 const eventSchema = new mongoose.Schema({
  id: {
     type: Number,
-    required : true
+    required : false
  },
  categoryId: {
     type: Number,
-    required : true
+    required : false
  },
  ownerId: {
     type: Number,
-    required : true
+    required : false
  },
  title : {
     type: String,
@@ -40,7 +40,7 @@ const eventSchema = new mongoose.Schema({
  },
  isActive : {
     type: Boolean,
-    required : true
+    required : false
  },
 });
 
