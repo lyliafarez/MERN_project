@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Event } from "../models/Event";
+import { EventModel } from "../models/Event";
 
 /**
  * Logique de nos différente routes
@@ -22,7 +22,7 @@ class EventController {
 
   findAll = async (req: Request, res: Response, next: Function) => {
     
-    const allEvents = await Event.find()
+    const allEvents = await EventModel.find().populate('categoryId')
     res.status(200).json({
      events: allEvents
     })
@@ -37,7 +37,7 @@ class EventController {
   findById = async (req: Request, res: Response, next: Function) => {
     res
       .status(200)
-      .send(await Event.findById(req.params.id))
+      .send(await EventModel.findById(req.params.id))
       .end();
     next();
   };
@@ -51,7 +51,7 @@ class EventController {
   create = async (req: Request, res: Response, next: Function) => {
     res
       .status(201)
-      .send(await Event.create(req.body))
+      .send(await EventModel.create(req.body))
       .end();
     next();
   };
@@ -64,7 +64,7 @@ class EventController {
    */
   update = async (req: Request, res: Response) => {
     try {
-      const updatedEvent = await Event.findByIdAndUpdate(
+      const updatedEvent = await EventModel.findByIdAndUpdate(
         req.params.id,
         req.body,
         { new: true }
@@ -88,7 +88,7 @@ class EventController {
   delete = async (req: Request, res: Response, next: Function) => {
     res
       .status(200)
-      .send(await Event.findByIdAndDelete(req.params.id))
+      .send(await EventModel.findByIdAndDelete(req.params.id))
       .end();
     next();
   };

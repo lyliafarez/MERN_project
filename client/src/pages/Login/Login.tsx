@@ -26,7 +26,7 @@ export default function Login() {
 
                 // Enregistrement les informations de l'utilisateur dans le localStorage
                 localStorage.setItem("user", JSON.stringify(user));
-                navigate('/admin/eventtypes');
+                navigate('/events');
             } else {
                 setError("Email ou mot de passe incorrect."); 
                 setPassword("");
@@ -38,7 +38,7 @@ export default function Login() {
     };
 
     return (
-        <div className="container">
+        <div className="container" >
             <div className="row justify-content-center">
                 <div className="col-md-6">
                     <div className="card">
