@@ -37,7 +37,7 @@ export default function EventCard({ event ,handleRegistration, handleCancellatio
         {/* type and number of places */}
       <div className="flex flex-row justify-between">
         <span className="bg-blue-300 text-white px-1 py-1 rounded-md">{event.categoryId.label}</span>
-        { event.places != 0 ? <span className="text-green-400">{`${event.places} places left`}</span> : <span className="text-red-200">No places left</span>}
+        { event.nbPlaces != 0 ? <span className="text-green-400">{`${event.nbPlaces} places left`}</span> : <span className="text-red-200">No places left</span>}
       </div>
       {/* title */}
       <div className="flex justify-center">
