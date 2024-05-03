@@ -54,6 +54,17 @@ class BackendApi {
         throw error;
       }
     }  
+
+    async createCategory(categoryData: { name: string }): Promise<any> {
+      try {
+        const response = await axios.post('http://localhost:8080/category', categoryData);
+        return response.data;
+      } catch (error) {
+        console.error('Erreur lors de la création de la catégorie :', error);
+        throw error;
+      }
+    }
+ 
 }
 
 export default BackendApi
