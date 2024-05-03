@@ -12,17 +12,16 @@ class EventTypeController {
   create = async (req: Request, res: Response, next: Function) => {
     try {
       const eventData = {
-        ...req.body, // Copier les données de la requête
-        //createdBy: req.user._id,
+        ...req.body,
         createdAt: new Date()
       };
       
-      const newEventType = await EventType.create(eventData); // Créer l'événement avec les données modifiées
+      const newEventType = await EventType.create(eventData);
   
-      res.status(201).json(newEventType); // Renvoyer la réponse avec le nouvel événement créé
+      res.status(201).json(newEventType);
     } catch (error) {
       console.error("Erreur lors de la création de l'événement : ", error);
-      res.status(500).json({ error: "Erreur lors de la création de l'événement" }); // Gérer les erreurs
+      res.status(500).json({ error: "Erreur lors de la création de l'événement" });
     }
   };
 

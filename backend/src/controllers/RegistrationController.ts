@@ -54,7 +54,7 @@ class RegistrationController {
       const registration = await Registration.create(req.body);
   
       // Decrement the available places of the event
-      await EventModel.findByIdAndUpdate(registration.eventId, { $inc: { places: -1 } });
+      await EventModel.findByIdAndUpdate(registration.eventId, { $inc: { nbPlaces: -1 } });
   
       res.status(201).json(registration);
     } catch (error) {
@@ -92,11 +92,19 @@ class RegistrationController {
    * @param next
    */
   delete = async (req: Request, res: Response, next: Function) => {
-    res
-      .status(200)
-      .send(await Registration.findByIdAndDelete(req.params.id))
-      .end();
-    next();
+    try {
+      const { userId, eventId } = req.params;
+      const deletedRegistration = await Registration.findOneAndDelete({ userId, eventId });
+  
+      if (!deletedRegistration) {
+        return res.status(404).send("L'enregistrement n'a pas été trouvé.");
+      }
+  
+      res.status(200).send("L'enregistrement a été supprimé avec succès.");
+    } catch (error) {
+      // Gérer les erreurs
+      next(error);
+    }
   };
 
   cancelRegistration = async (req, res, next) => {
@@ -109,7 +117,7 @@ class RegistrationController {
   
       if (result.deletedCount === 1) {
         // Increment the available places of the event
-        await EventModel.findByIdAndUpdate(eventId, { $inc: { places: 1 } });
+        await EventModel.findByIdAndUpdate(eventId, { $inc: { nbPlaces: 1 } });
         
         res.status(200).json({ message: 'Registration deleted successfully' });
       } else {
