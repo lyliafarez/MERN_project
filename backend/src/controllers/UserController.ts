@@ -43,6 +43,20 @@ class UserController {
   };
 
   /**
+   * Récupération d'un users par son email
+   * @param req
+   * @param res
+   * @param next
+   */
+  findByEmail = async (req: Request, res: Response, next: Function) => {
+    res
+      .status(200)
+      .send(await User.findOne({email:req.params.email}))
+      .end();
+    next();
+  };
+
+  /**
    * Creation d'un users
    * @param req
    * @param res
