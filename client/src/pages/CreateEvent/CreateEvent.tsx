@@ -1,13 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BackendApi from '../../services/BackendApi';
 
 function CreateEvent() {
-  const backendApi = new BackendApi()
+  const backendApi = new BackendApi();
   const [eventData, setEventData] = useState({
     title: '',
     description: '',
     date: '',
+    address: '',
+    pictures: [],
+    links: [],
+    categoryId: '',
+    nbPlaces: 0
   });
+  const [eventTypes, setEventTypes] = useState([]);
+
+  useEffect(() => {
+    const fetchEventTypes = async () => {
+      try {
+        const fetchedEventTypes = await backendApi.getAllEventTypes();
+        setEventTypes(fetchedEventTypes);
+        console.log(fetchedEventTypes);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des types d\'événements:', error);
+      }
+    };
+    fetchEventTypes();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +63,10 @@ function CreateEvent() {
           <input type="date" name="date" value={eventData.date} onChange={handleChange} />
         </label>
         <label>
+          Nombre de places :
+          <input type="number" name="nbPlaces" value={eventData.nbPlaces} onChange={handleChange} />
+        </label>
+        <label>
           Adresse:
           <input type="text" name="address" value={eventData.address} onChange={handleChange} />
         </label>
@@ -55,6 +78,18 @@ function CreateEvent() {
           Liens:
           <input type="text" name="links" value={eventData.links} onChange={handleChange} />
         </label>
+        <label>
+          Type d'événement:
+          <select name="categoryId" value={eventData.categoryId} onChange={handleChange}>
+            <option value="">Sélectionner un type d'événement</option>
+            {eventTypes.map((eventType) => (
+              <option key={eventType.id} value={eventType.id}>
+                {eventType.label}
+              </option>
+            ))}
+          </select>
+        </label>
+
         <button type="submit">Valider</button>
       </form>
     </div>

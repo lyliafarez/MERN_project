@@ -7,7 +7,7 @@ const eventSchema = new mongoose.Schema({
     required : false
  },
  categoryId: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     required : false
  },
  ownerId: {
@@ -38,6 +38,10 @@ const eventSchema = new mongoose.Schema({
     type: Array,
     required : false
  },
+  nbPlaces: {
+    type: Number,
+    required: true
+  },
  isActive : {
     type: Boolean,
     required : false

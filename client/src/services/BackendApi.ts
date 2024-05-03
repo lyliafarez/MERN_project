@@ -12,7 +12,7 @@ class BackendApi {
         const response = await axios.get<any>( "http://localhost:8080/eventTypes");
         return response.data.eventtypes;
       } catch (error) {
-        console.error("erreur lors de la récupération des données : ", error);
+        console.error("Erreur lors de la récupération des données : ", error);
         throw error;
       }
     }
@@ -47,6 +47,7 @@ class BackendApi {
  
     async createEvent(eventData: any): Promise<any> {
       try {
+        console.log("Création évenement : ",eventData);
         const response = await axios.post('http://localhost:8080/events', { ...eventData, isActive: false });
         return response.data;
       } catch (error) {
@@ -64,7 +65,16 @@ class BackendApi {
         throw error;
       }
     }
- 
+
+    async getAllCategories(): Promise<Category[]> {
+      try {
+        const response = await axios.get<any>('http://localhost:8080/category');
+        return response.data.categories;
+      } catch (error) {
+        console.error('Erreur lors de la récupération des catégories: ', error);
+        throw error;
+      }
+    } 
 }
 
 export default BackendApi
