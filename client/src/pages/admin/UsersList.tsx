@@ -13,9 +13,8 @@ interface User {
 
 const UsersList:React.FC = () =>  {
     const [isPopupOpen, setPopupOpen] = useState(false);
-
     const [users, setUsers] = useState<User[]>([]);
-    const [error, setError] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState<string>(''); // State for search input
     const [selectedUser, setSelectedUser] = useState<User | null>(null); 
     const [checkedUsers, setCheckedUsers] = useState<{ [key: number]: boolean }>({}); // State for checkboxes
     const [isSelectAll, setIsSelectAll] = useState(false); // State for "select all" checkbox
@@ -32,8 +31,15 @@ const UsersList:React.FC = () =>  {
         
       });
   }, []);
-      
-    
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value); // Update search query
+  };
+
+  const filteredUsers = users.filter(
+    (user) =>
+      user.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.prenom.toLowerCase().includes(searchQuery.toLowerCase())
+  );
         const openPopup = (user: User) => {
           setPopupOpen(true);
           setSelectedUser(user);
@@ -57,28 +63,29 @@ const UsersList:React.FC = () =>  {
             </div>
             <div className="flex">
                 <p className="text-30 text-white bg-customGrayBlueFront p-3 rounded-t-lg">Edit Users</p>
-                <p className="text-30 text-white p-3 rounded-t-lg">Edit Events</p>
+                {/* <p className="text-30 text-white p-3 rounded-t-lg">Edit Events</p> */}
             </div>
             <div className="bg-customGrayBlueFront p-6">
                 <div className='py-6'>
-                <input type="text" placeholder="Enter text" className="border border-gray-300 rounded px-2 py-1 text-sm" />
+                <input type="text" placeholder="Enter text" className="border border-gray-300 rounded px-2 py-1 text-sm p-2.5 w-72" value={searchQuery} onChange={handleSearchChange}/>
                 </div>
                 <div className='pb-6 flex justify-between px-5'>
-                    <div>
+                    <div className='flex'>
                         {/* <input type="checkbox" id="selectAll" className="w-4 h-4 text-blue-500" /> */}
-                        <label  className="text-white text-lg font-medium mt-1 ml-3">Name</label>
+                        <p  className="text-white text-lg font-medium ml-3">Name</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white my-1 ml-3"><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
                     </div>
                     <div className='flex'>    
                         <p  className="text-white text-lg font-medium">Username</p>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white mt-1 ml-3"><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white my-1 ml-3"><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
                     </div>
                     <div className='flex'>
                         <p  className="text-white text-lg font-medium">Events</p>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white mt-1 ml-3"><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white my-1 ml-3"><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
                     </div>
                     <div  className="mr-20 flex">
                         <p  className="text-white text-lg font-medium">Admin</p>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white mt-1 ml-3"><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white my-1 ml-3"><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
                     </div>
                 </div>
                 <div className="border-t border-gray-300 h-1 my-4" /> 
@@ -94,7 +101,7 @@ const UsersList:React.FC = () =>  {
         </thead> */}
         {/* Table body */}
         <tbody className="">
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
                     <tr key={user.id} className="">
                     <td className="px-4 py-2 text-white">
                         {user.prenom} {user.nom}
