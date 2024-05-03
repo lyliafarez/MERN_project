@@ -33,7 +33,6 @@ class BackendApi {
 
     //fonction delete
     async deleteEventTypeById(eventId: string): Promise<void> {
-      console.log(eventId)
       try {
         await axios.delete(
           `http://localhost:8080/eventTypes/${eventId}`,
@@ -41,6 +40,19 @@ class BackendApi {
         );
       } catch (error) {
         console.error("Erreur lors de la suppression de l'événement : ", error);
+        throw error;
+      }
+    }
+
+    //Delete un participant d'un event
+    async deleteRegistrationById(userId: Number, eventId: Number): Promise<void>{
+      try {
+        await axios.delete(
+          `http://localhost:8080/registration/${userId}/${eventId}`,
+          { validateStatus: status => status === 204 }
+        );
+      } catch (error) {
+        console.error("Erreur lors de la désinscription : ", error);
         throw error;
       }
     }
@@ -66,7 +78,7 @@ class BackendApi {
       }
     }
 
-    async getAllCategories(): Promise<Category[]> {
+    async getAllCategories(): Promise<EventType[]> {
       try {
         const response = await axios.get<any>('http://localhost:8080/category');
         return response.data.categories;

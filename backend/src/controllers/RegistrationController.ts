@@ -86,12 +86,21 @@ class RegistrationController {
    * @param next
    */
   delete = async (req: Request, res: Response, next: Function) => {
-    res
-      .status(200)
-      .send(await Registration.findByIdAndDelete(req.params.id))
-      .end();
-    next();
+    try {
+      const { userId, eventId } = req.params;
+      const deletedRegistration = await Registration.findOneAndDelete({ userId, eventId });
+  
+      if (!deletedRegistration) {
+        return res.status(404).send("L'enregistrement n'a pas été trouvé.");
+      }
+  
+      res.status(200).send("L'enregistrement a été supprimé avec succès.");
+    } catch (error) {
+      // Gérer les erreurs
+      next(error);
+    }
   };
+  
 }
 
 export const registrationController = Object.freeze(new RegistrationController());
