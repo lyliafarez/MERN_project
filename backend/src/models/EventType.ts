@@ -23,9 +23,9 @@ const eventTypeSchema = new mongoose.Schema({
 }, {
   toJSON: {
     transform: function(doc, ret) {
-      ret.id = ret._id; // Renommer _id en id
-      delete ret._id; // Supprimer le champ _id
-      delete ret.__v; // Supprimer le champ __v si nécessaire
+      ret.id = ret._id; 
+      delete ret._id;
+      delete ret.__v;
     }
   }
 });
