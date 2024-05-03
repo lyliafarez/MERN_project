@@ -72,11 +72,11 @@ export default function AdminEventType() {
 
 
   return (
-    <body>
-      <div>
-        <h1>Ajout d'un évènement</h1>
-        <div className='new-event-type'>
-          <div>
+    <body className='mx-28'>
+      <div className='flex flex-col'>
+        <h1 className='mt-10 text-center text-4xl'>Ajout d'un évènement</h1>
+        <div className='flex flex-col items-center new-event-type'>
+          <div className='w-full'>
             <div className="mb-6">
               <label htmlFor="label" className="flex block mb-2 text-m font-medium text-gray-900 dark:text-white">Event Type</label>
               <input name="label" type="text" value={newEventType?.label} onChange={e => handleInputChange(e)} className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-white-700 dark:border-gray-600 dark:placeholder-white-400 dark:text-black   dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -86,17 +86,17 @@ export default function AdminEventType() {
               <input name="description" type="text" value={newEventType?.description} onChange={e => handleInputChange(e)} className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-white-700 dark:border-gray-600 dark:placeholder-white-400 dark:text-black   dark:focus:ring-blue-500 dark:focus:border-blue-500" />
             </div>
           </div>
-          <button className="mb-10 cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+          <button className="w-1/6 mb-10 cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
             onClick={e => createEventType()}>
             Confirm
           </button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {eventTypes.map((eventType, index) => (
-            <div key={index} className="flex flex-col bg-gray-200 p-4 rounded-lg shadow-md">
+            <div key={index} className="items-center flex flex-col bg-gray-200 p-4 rounded-lg shadow-md">
               <p className="text-gray-800 font-semibold">{eventType.label}</p>
               <p className="text-gray-600">{eventType.description}</p>
-              <div>
+              <div className='flex'>
                 <button
                   className="flex justify-center items-center mt-2 h-10 w-20 bg-gradient-to-r from-[#fb7185] via-[#e11d48] to-[#be123c] hover:shadow-xl hover:shadow-red-500 hover:scale-105 duration-300 hover:from-[#be123c] hover:to-[#fb7185] text-white font-semibold rounded-md mx-auto"
                   onClick={() => deleteEventTypeById(eventType.id)}
