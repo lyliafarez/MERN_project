@@ -4,6 +4,7 @@ import 'bootstrap'
 import EventType from './pages/AdminEventType/AdminEventType'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup';
+import CreateEvent from './pages/CreateEvent/CreateEvent'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/register" element={<Signup/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/admin/eventtypes" element={<EventType/>}/>
+        <Route path="/createEvent" element={<CreateEvent/>}/>
       </Routes>
     </BrowserRouter>
 
