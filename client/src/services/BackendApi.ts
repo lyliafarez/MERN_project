@@ -48,7 +48,7 @@ class BackendApi {
     async createEvent(eventData: any): Promise<any> {
       try {
         console.log("Création évenement : ",eventData);
-        const response = await axios.post('http://localhost:8080/events', { ...eventData, isActive: false });
+        const response = await axios.post('http://localhost:8080/events', { ...eventData, isActive: true });
         return response.data;
       } catch (error) {
         console.error('Erreur lors de la création de l\'événement :', error);
