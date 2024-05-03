@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
 export default function Signup() {
 
     const [name, setName] = useState("");
@@ -15,7 +16,7 @@ export default function Signup() {
     const [error, setError] = useState(""); 
     const navigate = useNavigate()
 
-    
+
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -133,7 +134,7 @@ export default function Signup() {
                                         <strong>Password</strong>
                                     </label>
                                     <input
-                                        type="password"
+                                        type={showPassword ? "text" : "password"} 
                                         placeholder="Enter mot de passe"
                                         autoComplete="off"
                                         name="password"

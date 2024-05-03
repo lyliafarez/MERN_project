@@ -9,8 +9,9 @@ export default function AdminEventType() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Suppression de l'état de connexion du localStorage
-    localStorage.removeItem('isLoggedIn');
+    // Suppression l'état de connexion  et des données utilisateur du localStorage
+    localStorage.removeItem("user");
+    localStorage.removeItem("isLoggedIn");
     navigate('/login');
   };
 
