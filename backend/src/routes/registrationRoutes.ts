@@ -11,4 +11,5 @@ export const setRegistrationRouting = (app) => {
   app.post(`/${endpoint}`, registrationController.create);
   app.patch(`/${endpoint}/:id`, registrationController.update);
   app.delete(`/${endpoint}/:id`, registrationController.delete);
+  app.delete(`/${endpoint}/:userId/cancel/:eventId`,registrationController.cancelRegistration)
 };

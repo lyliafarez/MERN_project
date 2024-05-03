@@ -40,6 +40,10 @@ const eventSchema = new mongoose.Schema({
     type: Array,
     required : false
  },
+ places : {
+   type: Number,
+   required : true
+},
  isActive : {
     type: Boolean,
     required : true

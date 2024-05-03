@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Registration } from "../models/Registration";
-
+import { EventModel } from "../models/Event";
 /**
  * Logique de nos différente routes
  */
@@ -48,14 +48,20 @@ class RegistrationController {
    * @param res
    * @param next
    */
-  create = async (req: Request, res: Response, next: Function) => {
-    res
-      .status(201)
-      .send(await Registration.create(req.body))
-      .end();
-    next();
+  create = async (req, res, next) => {
+    try {
+      // Create the registration
+      const registration = await Registration.create(req.body);
+  
+      // Decrement the available places of the event
+      await EventModel.findByIdAndUpdate(registration.eventId, { $inc: { places: -1 } });
+  
+      res.status(201).json(registration);
+    } catch (error) {
+      console.error('Error creating registration:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
   };
-
   /**
    * Mise à jour d'un users
    * @param req
@@ -91,6 +97,28 @@ class RegistrationController {
       .send(await Registration.findByIdAndDelete(req.params.id))
       .end();
     next();
+  };
+
+  cancelRegistration = async (req, res, next) => {
+    try {
+      const userId = req.params.userId;
+      const eventId = req.params.eventId;
+  
+      // Delete the registration
+      const result = await Registration.deleteOne({ userId, eventId });
+  
+      if (result.deletedCount === 1) {
+        // Increment the available places of the event
+        await EventModel.findByIdAndUpdate(eventId, { $inc: { places: 1 } });
+        
+        res.status(200).json({ message: 'Registration deleted successfully' });
+      } else {
+        res.status(404).json({ message: 'Registration not found' });
+      }
+    } catch (error) {
+      console.error('Error deleting registration:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
   };
 }
 

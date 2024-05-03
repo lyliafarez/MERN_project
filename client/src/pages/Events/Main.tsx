@@ -8,6 +8,7 @@ import parseLongDateFormat from "../../helpers/parseLongDate";
 import SearchBar from "../../Components/SearchBar";
 import CategorySelector from "../../Components/CategorySelector";
 import DatePicker from "../../Components/DatePicker";
+import Swal from "sweetalert2";
 
 export default function Main() {
   const backendApi = new BackendApi();
@@ -105,6 +106,37 @@ export default function Main() {
     });
   }, []);
 
+
+  const updateEventsList = async () => {
+    const response = await backendApi.getAllEvents();
+    setEvents(response);
+    setFilteredEvents(response);
+  };
+
+  const handleRegistration = async (form) => {
+    await backendApi.createRegistration(form).then(() => {
+        Swal.fire({
+          title: "success",
+          text: "You joined the event successfully !",
+          icon: "success",
+          confirmButtonText: "Done",
+        });
+      });
+    await updateEventsList();
+  };
+
+  const handleCancellation = async (userId:string, eventId:string) => {
+    await backendApi.cancelRegistration(userId,eventId).then(() => {
+        Swal.fire({
+            title: "info",
+            text: "Your registration is canceled!",
+            icon: "info",
+            confirmButtonText: "Done",
+          });
+    });
+    await updateEventsList();
+  };
+
   return (
     <div className="mx-8 my-6">
       <h1 className="font-bold text-3xl">Events list</h1>
@@ -132,7 +164,7 @@ export default function Main() {
         />
       </div>
 
-      <EventsList key={filteredEvents} events={filteredEvents} />
+      <EventsList key={filteredEvents} events={filteredEvents} handleRegistration={handleRegistration} handleCancellation={handleCancellation} />
     </div>
   );
 }
