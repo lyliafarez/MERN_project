@@ -74,7 +74,7 @@ export default function AdminEventType() {
   return (
     <body className='mx-28'>
       <div className='flex flex-col'>
-        <h1 className='mt-10 text-center text-4xl'>Ajout d'un évènement</h1>
+        <h1 className='mt-10 text-center text-4xl'>Add an Event</h1>
         <div className='flex flex-col items-center new-event-type'>
           <div className='w-full'>
             <div className="mb-6">

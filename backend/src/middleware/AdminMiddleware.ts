@@ -4,7 +4,7 @@ const isAdminOrOwner = async (req, res, next) => {
     try {
       const { userId } = req.params;
       const currentUser = await User.findById(req.user.id);
-  
+      
       if (!currentUser) {
         return res.status(401).send("Utilisateur non authentifié.");
       }
@@ -19,4 +19,3 @@ const isAdminOrOwner = async (req, res, next) => {
       next(error);
     }
   };
-  
