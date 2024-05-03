@@ -12,4 +12,5 @@ export const setUserRouting = (app) => {
   app.post(`/${endpoint}`, userController.create);
   app.patch(`/${endpoint}/:id`, userController.update);
   app.delete(`/${endpoint}/:id`, userController.delete);
+
 };
