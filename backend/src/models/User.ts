@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 
+
 const userSchema = new mongoose.Schema({
  id: {
     type: Number,
@@ -28,6 +29,7 @@ const userSchema = new mongoose.Schema({
    required : true
 }
 });
+
 
 export const User = mongoose.model("User", userSchema);
 

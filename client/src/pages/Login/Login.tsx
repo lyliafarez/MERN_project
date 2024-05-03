@@ -23,6 +23,9 @@ export default function Login() {
 
                    // Enregistrement de l'état de connexion dans le localStorage
                 localStorage.setItem("isLoggedIn", true);
+
+                // Enregistrement les informations de l'utilisateur dans le localStorage
+                localStorage.setItem("user", JSON.stringify(user));
                 navigate('/admin/eventtypes');
             } else {
                 setError("Email ou mot de passe incorrect."); 
