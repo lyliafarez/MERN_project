@@ -4,15 +4,15 @@ import mongoose from "mongoose";
 const eventSchema = new mongoose.Schema({
  id: {
     type: Number,
-    required : true
+    required : false
  },
  categoryId: {
-    type: Number,
-    required : true
+    type: mongoose.Schema.Types.ObjectId,
+    required : false
  },
  ownerId: {
     type: Number,
-    required : true
+    required : false
  },
  title : {
     type: String,
@@ -38,9 +38,13 @@ const eventSchema = new mongoose.Schema({
     type: Array,
     required : false
  },
+  nbPlaces: {
+    type: Number,
+    required: true
+  },
  isActive : {
     type: Boolean,
-    required : true
+    required : false
  },
 });
 
