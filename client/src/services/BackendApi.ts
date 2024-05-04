@@ -2,6 +2,7 @@ import axios from 'axios';
 import EventType from '../models/EventType';
 import {EventModel }from '../../../backend/src/models/Event';
 import Registration from '../../../backend/src/models/Registration';
+// import { navigate } from 'react-router-dom';
 
 class BackendApi {
     constructor() {
@@ -53,6 +54,28 @@ class BackendApi {
       } catch (error) {
         console.error("erreur lors de la récupération des données : ", error);
         throw error;
+      }
+    }
+
+    async getEventById(eventId: string): Promise<EventModel> {
+      try {
+          const response = await axios.get<EventModel>(`http://localhost:8080/events/${eventId}`);
+          return response.data;
+      } catch (error) {
+          console.error("Erreur lors de la récupération de l'événement : ", error);
+          throw error;
+      }
+    }
+
+    async updateEvent(eventId: string, eventData: Partial<EventModel>): Promise<EventModel> {
+      try {
+          const response = await axios.patch<EventModel>(`http://localhost:8080/events/${eventId}`,eventData,
+              { validateStatus: status => status === 200 } 
+          );
+          return response.data;
+      } catch (error) {
+          console.error("Erreur lors de la mise à jour de l'événement : ", error);
+          throw error;
       }
     }
 

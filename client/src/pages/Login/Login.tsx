@@ -23,7 +23,8 @@ export default function Login() {
 
                    // Enregistrement de l'état de connexion dans le localStorage
                 localStorage.setItem("isLoggedIn", true);
-                navigate('/events');
+                // navigate('/events');
+                navigate('/events', { state: { isAdmin: user.isAdmin } });
             } else {
                 setError("Email ou mot de passe incorrect."); 
                 setPassword("");
@@ -96,3 +97,4 @@ export default function Login() {
         </div>
     );
 }
+
