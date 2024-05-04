@@ -8,7 +8,6 @@ import parseLongDateFormat from "../../helpers/parseLongDate";
 import SearchBar from "../../Components/SearchBar";
 import CategorySelector from "../../Components/CategorySelector";
 import DatePicker from "../../Components/DatePicker";
-import Swal from "sweetalert2";
 import showSweetAlert from "../../helpers/showSweetAlert";
 import AppLayout from "../../Components/Layouts/AppLayout";
 
