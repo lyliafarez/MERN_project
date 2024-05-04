@@ -59,7 +59,7 @@ interface User {
           console.error("Error deleting user:", error);
         }
       };
-    
+      //spread operator for fintering user
       const sortedUsers = [...users].sort((a, b) => {
         let valueA = a[sortField];
         let valueB = b[sortField];
@@ -86,11 +86,6 @@ interface User {
         setPopupOpen(true);
         setSelectedUser(user);
       };
-    
-      const closePopup = () => {
-        setPopupOpen(false);
-        setSelectedUser(null);
-      };
         
   return (
     <div className="bg-customGrayBlue h-screen">
@@ -102,11 +97,13 @@ interface User {
                     </button>
                 </div>
                 <button className="bg-blue-500 text-white p-2 rounded-full flex justify-center items-center h-16 w-16">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
                 </button>
             </div>
             <div className="flex">
                 <p className="text-lg text-white bg-customGrayBlueFront p-3 rounded-t-lg">Edit Users</p>
-                {/* <p className="text-30 text-white p-3 rounded-t-lg">Edit Events</p> */}
             </div>
             <div className="bg-customGrayBlueFront p-6">
                 <div className='py-6'>
