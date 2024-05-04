@@ -23,8 +23,10 @@ export default function Login() {
 
                    // Enregistrement de l'état de connexion dans le localStorage
                 localStorage.setItem("isLoggedIn", true);
-                // navigate('/events');
-                navigate('/events', { state: { isAdmin: user.isAdmin } });
+
+                // Enregistrement les informations de l'utilisateur dans le localStorage
+                localStorage.setItem("user", JSON.stringify(user));
+                navigate('/events');
             } else {
                 setError("Email ou mot de passe incorrect."); 
                 setPassword("");
@@ -88,7 +90,7 @@ export default function Login() {
                                 </div>
                             </form>
                             <div className="text-center mt-3">
-                                <p>Forgot password? <strong><Link to="#" className="btn btn-link p-0">Reset it here</Link></strong></p>
+                                <p>don't have an account? <strong><Link to="/register" className="btn btn-link p-0">Register</Link></strong></p>
                             </div>
                         </div>
                     </div>

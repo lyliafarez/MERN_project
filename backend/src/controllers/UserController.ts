@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../models/User";
+import { Registration } from "../models/Registration";
 
 /**
  * Logique de nos différente routes
@@ -34,13 +35,38 @@ class UserController {
    * @param res
    * @param next
    */
-  findById = async (req: Request, res: Response, next: Function) => {
+ /*  findById = async (req: Request, res: Response, next: Function) => {
     res
       .status(200)
       .send(await User.findById(req.params.id))
       .end();
     next();
-  };
+  }; */
+
+  findById = async (req: Request, res: Response, next: Function) => {
+    try {
+        // Find the user by ID
+        const user = await User.findById(req.params.id);
+
+        // Check if user exists
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Find registrations for the user
+        const registrations = await Registration.find({ userId: req.params.id });
+
+        // Extract event IDs from registrations
+        const eventIds = registrations.map(registration => registration.eventId);
+
+        // Send response with user and event IDs
+        res.status(200).json({ user, eventIds });
+    } catch (error) {
+        console.error("Error fetching user and event IDs:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
 
   /**
    * Récupération d'un users par son email
