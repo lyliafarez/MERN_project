@@ -2,6 +2,7 @@ import axios from 'axios';
 import EventType from '../models/EventType';
 import {EventModel }from '../../../backend/src/models/Event';
 import Registration from '../../../backend/src/models/Registration';
+import User from '../../../backend/src/models/User';
 
 class BackendApi {
     constructor() {
@@ -115,6 +116,17 @@ class BackendApi {
         throw error;
       }
     } 
+
+    /* users */
+    async getUser(id:string): Promise<User> {
+      try {
+        const response = await axios.get<typeof EventType[]>( `http://localhost:8080/users/${id}`);
+        return response.data;
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données : ", error);
+        throw error;
+      }
+    }
 }
 
 export default BackendApi

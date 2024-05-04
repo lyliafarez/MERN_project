@@ -4,25 +4,10 @@ import EventType from '../../models/EventType';
 import BackendApi from '../../services/BackendApi';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import AppLayout from '../../Components/Layouts/AppLayout';
 
 export default function AdminEventType() {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    // Suppression l'état de connexion  et des données utilisateur du localStorage
-    localStorage.removeItem("user");
-    localStorage.removeItem("isLoggedIn");
-    navigate('/login');
-  };
-
-  useEffect(() => {
-    // Vérification de l'état de connexion lors du chargement du composant
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if (!isLoggedIn) {
-      navigate('/login');
-    }
-  }, []);
-
+  
   const backendApi = new BackendApi();
   const [eventTypes, setEventTypes] = useState<EventType[]>([]);
   const [newEventType, setNewEventType] = useState<Partial<EventType>>({
@@ -74,8 +59,9 @@ export default function AdminEventType() {
   }
 
   return (
+    <AppLayout>
     <div className='admin-event-type'>
-      <button onClick={handleLogout}>Logout</button>
+      
       <div className='new-event-type'>
         <div>
           <div className='flex flex-col items-center new-event-type'>
@@ -147,5 +133,6 @@ export default function AdminEventType() {
         </div>
       </div>
     </div>
+    </AppLayout>
   );
 }

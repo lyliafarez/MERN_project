@@ -11,7 +11,7 @@ import CreateEvent from './pages/CreateEvent/CreateEvent'
 function App() {
   return (
     <BrowserRouter>
-    <NavBar/>
+    {/* <NavBar/> */}
       <Routes>
         <Route path="/"/>
         <Route path="/register" element={<Signup/>}/>

@@ -10,11 +10,14 @@ import CategorySelector from "../../Components/CategorySelector";
 import DatePicker from "../../Components/DatePicker";
 import Swal from "sweetalert2";
 import showSweetAlert from "../../helpers/showSweetAlert";
+import AppLayout from "../../Components/Layouts/AppLayout";
 
 export default function Main() {
   const backendApi = new BackendApi();
+  const [user, setUser] = useState(null);
   const [events, setEvents] = useState<(typeof EventModel)[]>([]);
   const [searchInput, setSearchInput] = useState<string>("");
+  const [userEvents, setUserEvents] = useState<string[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<(typeof EventModel)[]>(
     []
   );
@@ -95,7 +98,19 @@ export default function Main() {
     }
   };
 
+  const updateUserEvents = async () =>{
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    setUser(storedUser);
+    if(storedUser){
+        const response = await backendApi.getUser(storedUser._id);
+        setUser(response.user)
+        setUserEvents(response.eventIds)
+    }
+  }
+
   useEffect(() => {
+   
+    updateUserEvents()
     backendApi.getAllEvents().then((response) => {
         
       setFilteredEvents(response);
@@ -119,6 +134,7 @@ export default function Main() {
         showSweetAlert("success","You joined the event successfully !","success","Done")
       });
     await updateEventsList();
+    await updateUserEvents()
   };
 
   const handleCancellation = async (userId:string, eventId:string) => {
@@ -126,9 +142,11 @@ export default function Main() {
           showSweetAlert("info","Your registration is canceled!","info","Done")
     });
     await updateEventsList();
+    await updateUserEvents()
   };
 
   return (
+    <AppLayout>
     <div className="mx-8 my-6">
       <h1 className="font-bold text-3xl">Events list</h1>
       {/* search bar and filters */}
@@ -158,7 +176,8 @@ export default function Main() {
         <a href='/admin/eventtypes' className="px-2 py-2 bg-blue-400 rounded-md text-white">Add an event type</a>
       </div>
 
-      <EventsList key={filteredEvents} events={filteredEvents} handleRegistration={handleRegistration} handleCancellation={handleCancellation} />
+      <EventsList key={filteredEvents} events={filteredEvents} handleRegistration={handleRegistration} handleCancellation={handleCancellation} userEvents={userEvents} user={user} />
     </div>
+    </AppLayout>
   );
 }

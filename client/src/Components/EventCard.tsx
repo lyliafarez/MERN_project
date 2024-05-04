@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import EventDetails from "./EventDetails";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
-export default function EventCard({ event ,handleRegistration, handleCancellation }) {
+export default function EventCard({ event ,handleRegistration, handleCancellation, userEvents,user }) {
  const [showDetails, setShowDetails] = useState(false);
 
  const handleShowDetails = ()=>{
@@ -16,7 +16,7 @@ export default function EventCard({ event ,handleRegistration, handleCancellatio
 
   const register = () => {
     const form = {
-      userId: "6630c78c1d08e0969cd80f2d",
+      userId: user._id,
       eventId: event._id,
     };
     handleRegistration(form)
@@ -24,7 +24,7 @@ export default function EventCard({ event ,handleRegistration, handleCancellatio
 
   const cancelRegistration = () => {
     const form = {
-      userId: "6630c78c1d08e0969cd80f2d",
+      userId: user._id,
       eventId: event._id,
     };
     handleCancellation(form.userId,form.eventId)
@@ -69,18 +69,19 @@ export default function EventCard({ event ,handleRegistration, handleCancellatio
      
       <div className="my-3 flex flex-row gap-2">
         <span className="border border-gray-400 h-full"></span>
-      { event.nbPlaces != 0 &&<button
+      { event.nbPlaces != 0 && new Date() < new Date(event.date) &&  !userEvents.includes(event._id) &&<button
         onClick={register}
         className="px-2 py-1 text-xs text-white rounded-md bg-blue-400 hover:bg-blue-600 hover:text-blue-200"
       >
        RSVP
       </button>}
-      <button
+      { event.nbPlaces != 0 && new Date() < new Date(event.date) && userEvents.includes(event._id) && <button
         onClick={cancelRegistration}
         className="px-2 py-1 text-xs text-white rounded-md bg-red-400 hover:bg-red-600 hover:text-red-300"
       >
         cancel
-      </button>
+      </button>}
+      {((event.nbPlaces == 0 && !userEvents.includes(event._id)) || (new Date() > new Date(event.date))) && "Event closed"}
       </div>
       </div>
       

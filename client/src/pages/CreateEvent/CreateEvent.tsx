@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import BackendApi from '../../services/BackendApi';
 import { useNavigate } from 'react-router-dom';
+import AppLayout from '../../Components/Layouts/AppLayout';
 
 function CreateEvent() {
   const backendApi = new BackendApi();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [eventData, setEventData] = useState({
     title: '',
     description: '',
@@ -12,7 +14,7 @@ function CreateEvent() {
     pictures: [],
     links: [],
     categoryId: '',
-    ownerId: '6634e935c735d50e12fe384d',
+    ownerId: user._id,
     nbPlaces: 0
   });
   const [eventTypes, setEventTypes] = useState([]);
@@ -52,6 +54,7 @@ function CreateEvent() {
   };
 
   return (
+    <AppLayout>
     <div className="bg-gray-600 min-h-screen flex justify-center items-center">
       <div className="max-w-md w-full p-8 bg-gray-600 rounded-lg">
         <h1 className="text-2xl mb-4 text-white">Créer un événement</h1>
@@ -99,6 +102,7 @@ function CreateEvent() {
         </form>
       </div>
     </div>
+    </AppLayout>
   );
 }
 
