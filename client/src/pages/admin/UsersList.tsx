@@ -1,6 +1,6 @@
 // admin/usersList.js
 import React, { useState, useEffect } from 'react';
-import DeletePopup from '../../components/popups/DeletePopup';
+import DeletePopup from '../../Components/popups/DeletePopup';
 import axios from 'axios';
 
 interface User {
@@ -65,8 +65,8 @@ interface User {
         let valueB = b[sortField];
     
         if (typeof valueA === 'string') {
-          valueA = valueA.toLowerCase();
-          valueB = valueB.toLowerCase();
+          valueA = valueA?.toLowerCase();
+          valueB = valueB?.toLowerCase();
         }
     
         if (isSortAsc) {
@@ -78,8 +78,8 @@ interface User {
     
       const filteredUsers = sortedUsers.filter(
         (user) =>
-          user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          user.lastname.toLowerCase().includes(searchQuery.toLowerCase())
+          user.name?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+          user.lastname?.toLowerCase().includes(searchQuery?.toLowerCase())
       );
     
       const openPopup = (user: User) => {
