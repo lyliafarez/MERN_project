@@ -24,10 +24,10 @@ const DeletePopup: FC<PopupProps> = ({ isOpen, onClose, children }) => {
           className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg"
           onClick={onClose}>Delete
         </button>
-        <button
+        {/* <button
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg"
           onClick={onClose}>Edit User
-        </button>
+        </button> */}
       </div>
     </div>
   );

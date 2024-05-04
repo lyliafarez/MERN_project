@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import BackendApi from "../../services/BackendApi";
 import { EventModel } from "../../../../backend/src/models/Event";
 import EventType from "../../models/EventType";
-import EventsList from "../../../Components/EventsList";
+import EventsList from "../../components/EventsList";
 import parseDate from "../../helpers/parseDate";
 import parseLongDateFormat from "../../helpers/parseLongDate";
-import SearchBar from "../../Components/SearchBar";
-import CategorySelector from "../../Components/CategorySelector";
-import DatePicker from "../../Components/DatePicker";
+import SearchBar from "../../components/SearchBar";
+import CategorySelector from "../../components/CategorySelector";
+import DatePicker from "../../components/DatePicker";
 import Swal from "sweetalert2";
 
 export default function Main() {

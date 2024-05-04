@@ -2,7 +2,7 @@ import { Routes, Route, BrowserRouter} from 'react-router-dom'
 import './App.css'
 import UsersList from './pages/admin/UsersList';
 import Main from './pages/Events/Main';
-// import NavBar from './Components/NavBar';
+import NavBar from './components/NavBar';
 import 'bootstrap';
 import EventType from './pages/AdminEventType/AdminEventType'
 import Login from './pages/Login/Login'
