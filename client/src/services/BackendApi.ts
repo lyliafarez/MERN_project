@@ -70,7 +70,7 @@ class BackendApi {
 
     async updateEvent(eventId: string, eventData: Partial<EventModel>): Promise<EventModel> {
       try {
-          const response = await axios.patch<EventModel>(`http://localhost:8080/events/${eventId}`,eventData,
+          const response = await axios.put<EventModel>(`http://localhost:8080/events/${eventId}`,eventData,
               { validateStatus: status => status === 200 } 
           );
           return response.data;

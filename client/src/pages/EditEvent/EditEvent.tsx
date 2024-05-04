@@ -19,6 +19,9 @@ function EditEvent() {
     nbPlaces: 0
   });
   const [eventTypes, setEventTypes] = useState([]);
+  const [registrations, setRegistrations] = useState([]);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
 
   useEffect(() => {
     const fetchEventData = async () => {
@@ -38,7 +41,7 @@ function EditEvent() {
       try {
         const fetchedEventTypes = await backendApi.getAllEventTypes();
         setEventTypes(fetchedEventTypes);
-        console.log(fetchedEventTypes);
+        // console.log(fetchedEventTypes);
       } catch (error) {
         console.error('Erreur lors de la récupération des types d\'événements:', error);
       }
@@ -46,6 +49,32 @@ function EditEvent() {
 
     fetchEventTypes();
   }, [backendApi]);
+
+  useEffect(() => {
+    const fetchRegistrations = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/registrations/byEvent/${eventId}`);
+            const registrationsData = response.data.registrations;
+            
+            const registrationsDetails = await Promise.all(registrationsData.map(async (registration) => {
+                const userResponse = await axios.get(`http://localhost:8080/users/${registration.userId}`);
+                const userName = userResponse.data.user.name + " " + userResponse.data.user.lastname;
+                return {
+                    ...registration,
+                    userName: userName
+                };
+            }));
+
+            setRegistrations(registrationsDetails);
+        } catch (error) {
+            console.error('Erreur lors de la récupération des inscriptions :', error);
+        }
+    };
+
+    fetchRegistrations();
+}, [eventId]);
+
+
 
   const handleSubmit = async () => {
     try {
@@ -62,6 +91,34 @@ function EditEvent() {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleCancelRegistration = async (userId) => {
+    try {
+      await backendApi.cancelRegistration(userId, eventId);
+      const response = await axios.get(`http://localhost:8080/registrations/byEvent/${eventId}`);
+      setRegistrations(response.data.registrations);
+    } catch (error) {
+      console.error('Erreur lors de l\'annulation de l\'inscription :', error);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmation(false);
+    setUserToDelete(null);
+  };
+
+  const openConfirmationDialog = (userId) => {
+    setUserToDelete(userId);
+    setShowConfirmation(true);
+  };
+
+  const confirmDelete = async () => {
+    if (userToDelete) {
+      await handleCancelRegistration(userToDelete);
+      setShowConfirmation(false);
+      setUserToDelete(null);
+    }
   };
 
   return (
@@ -117,6 +174,26 @@ function EditEvent() {
                 ))}
                 </select>
             </div>
+            
+            <div className="flex flex-col">
+              <label className="text-white edit-event-label">Personnes inscrites:</label>
+              <ul>
+                    {registrations.map((registration) => (
+                        <li className="text-white edit-event-label" key={registration.userId}>
+                            {registration.userName} <button className="btn bg-red-500 text-white rounded-md" onClick={() => openConfirmationDialog(registration.userId)}>Supprimer</button>
+                        </li>
+                    ))}
+              </ul>
+            </div>
+
+            {showConfirmation && (
+                <div className="text-white ml-2">
+                    <p>Êtes-vous sûr de vouloir supprimer cette inscription ?</p>
+                    <button onClick={confirmDelete} className="btn bg-red-500 text-white rounded-md">Oui</button>
+                    <button onClick={cancelDelete} className="btn bg-blue-500 text-white rounded-md">Non</button>
+                </div>
+            )}
+
             <button onClick={handleSubmit} className="btn bg-blue-500 text-white rounded-md w-full float-left">Enregistrer</button>
           </div>
         </div>

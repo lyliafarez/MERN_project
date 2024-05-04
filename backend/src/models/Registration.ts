@@ -15,8 +15,7 @@ const registrationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Event',
     nullable : true
- },
- 
+ }
 }, {
    toJSON: {
      transform: function(doc, ret) {
