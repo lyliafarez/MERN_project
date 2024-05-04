@@ -1,6 +1,5 @@
 //import React, { useState, useEffect } from 'react';
 //import BackendApi from '../../services/BackendApi';
-import { EventModel } from '../../../backend/src/models/Event';
 import EventCard from './EventCard';
 
 

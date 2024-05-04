@@ -73,7 +73,7 @@ function CreateEvent() {
           </div>
           <div className="flex flex-col">
             <label className="text-white">Nombre de places :</label>
-            <input type="number" name="nbPlaces" value={eventData.nbPlaces} onChange={handleChange} className="input bg-gray-100 rounded-md" />
+            <input type="number" name="nbPlaces" value={eventData.nbPlaces} onChange={handleChange} className="input bg-gray-100 rounded-md" min="0" />
           </div>
           <div className="flex flex-col">
             <label className="text-white">Adresse:</label>
@@ -81,7 +81,8 @@ function CreateEvent() {
           </div>
           <div className="flex flex-col">
             <label className="text-white">Photos:</label>
-            <input type="text" name="pictures" value={eventData.pictures} onChange={handleChange} className="input bg-gray-100 rounded-md" />
+            {/* <input type="text" name="pictures" value={eventData.pictures} onChange={handleChange} className="input bg-gray-100 rounded-md" /> */}
+            <input type="file" name="pictures" multiple onChange={handleChange} className="input bg-gray-100 rounded-md" />
           </div>
           <div className="flex flex-col">
             <label className="text-white">Liens:</label>
