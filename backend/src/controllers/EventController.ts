@@ -22,7 +22,7 @@ class EventController {
 
   findAll = async (req: Request, res: Response, next: Function) => {
     
-    const allEvents = await EventModel.find().populate('categoryId')
+    const allEvents = await EventModel.find().populate('categoryId').populate('ownerId')
     res.status(200).json({
      events: allEvents
     })

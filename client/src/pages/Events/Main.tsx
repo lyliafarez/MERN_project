@@ -3,12 +3,13 @@ import BackendApi from "../../services/BackendApi";
 import { EventModel } from "../../../../backend/src/models/Event";
 import EventType from "../../models/EventType";
 import EventsList from "../../Components/EventsList";
-import parseDate from "../../helpers/parseDate";
+//import parseDate from "../../helpers/parseDate";
 import parseLongDateFormat from "../../helpers/parseLongDate";
 import SearchBar from "../../Components/SearchBar";
 import CategorySelector from "../../Components/CategorySelector";
 import DatePicker from "../../Components/DatePicker";
 import Swal from "sweetalert2";
+import showSweetAlert from "../../helpers/showSweetAlert";
 
 export default function Main() {
   const backendApi = new BackendApi();
@@ -47,7 +48,7 @@ export default function Main() {
     const end = parseLongDateFormat(endDate);
 
     const filteredItems = events.filter((item: EventModel) => {
-      const itemDate = parseDate(item.date);
+      const itemDate = new Date(item.date);
       return itemDate >= start && itemDate <= end;
     });
 
@@ -115,24 +116,14 @@ export default function Main() {
 
   const handleRegistration = async (form) => {
     await backendApi.createRegistration(form).then(() => {
-        Swal.fire({
-          title: "success",
-          text: "You joined the event successfully !",
-          icon: "success",
-          confirmButtonText: "Done",
-        });
+        showSweetAlert("success","You joined the event successfully !","success","Done")
       });
     await updateEventsList();
   };
 
   const handleCancellation = async (userId:string, eventId:string) => {
     await backendApi.cancelRegistration(userId,eventId).then(() => {
-        Swal.fire({
-            title: "info",
-            text: "Your registration is canceled!",
-            icon: "info",
-            confirmButtonText: "Done",
-          });
+          showSweetAlert("info","Your registration is canceled!","info","Done")
     });
     await updateEventsList();
   };
@@ -162,6 +153,9 @@ export default function Main() {
           handleCalendarChange={handleCalendarChange}
           resetCalendar={resetCalendar}
         />
+        {/* Create event button */}
+        <a href='/createEvent' className="px-2 py-2 bg-blue-400 rounded-md text-white">Add an event</a>
+        <a href='/admin/eventtypes' className="px-2 py-2 bg-blue-400 rounded-md text-white">Add an event type</a>
       </div>
 
       <EventsList key={filteredEvents} events={filteredEvents} handleRegistration={handleRegistration} handleCancellation={handleCancellation} />

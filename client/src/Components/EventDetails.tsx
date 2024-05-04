@@ -1,21 +1,55 @@
-
+import defaultImg from "../img/corporate-events.jpg";
+import { CalendarDaysIcon, MapIcon } from "@heroicons/react/24/solid";
 
 function EventDetails({handleClose,event}) {
-  
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+            <div className="bg-white">
               <div className="sm:flex sm:items-start">
                 
-                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                  <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">{event.title}</h3>
-                  <div className="mt-2">
-                    <span>{event.categoryId.label}</span>
-                    <p className="text-sm text-gray-500">{event.description}</p>
-                  </div>
+                <div className="flex flex-col justify-center">
+                    {/* img */}
+                    <img className="" src={defaultImg}/>
+                    <div className="mx-2 my-2 flex flex-col justify-center">
+                        <div className="flex justify-between items-center">
+                        <span className="text-3xl font-bold mb-4">{event.title}</span>
+                        <div>
+                        <span className="py-1 px-2 font-semibold text-white bg-purple-500 rounded-md ">{event.categoryId.label}</span>
+                        </div>
+                        
+                        </div>
+                        
+                        <div className="flex">
+                            <CalendarDaysIcon className="h-5 w-5"/>
+                            <span>{event.date}</span>
+                        </div>
+                        <div className="flex">
+                            <MapIcon className="h-5 w-5"/>
+                            <span>{event.address}</span>
+                        </div>
+                        
+                        <div className="my-2">
+                            <span className="text-base font-semibold">Description :</span>
+                            <p>{event.description}</p>
+                        </div>
+                        <div className="flex flex-col">
+                        <span className="text-base font-semibold">Links :</span>
+                        {event.links.length == 0 && "This event has none"}
+                        {event.links.map((link:string, index:number) => (
+                                <div key={index}>
+                                <a href={link} target="_blank" rel="noopener noreferrer">{link}</a>
+                                </div>
+                            ))}
+                        </div>
+                        <div>
+                        <span className="text-base font-semibold">Owner of the event :</span>
+                        <span>{`${event.ownerId.lastname} ${event.ownerId.name}`}</span>
+                        </div>
+                    </div>
+                 
                 </div>
               </div>
             </div>

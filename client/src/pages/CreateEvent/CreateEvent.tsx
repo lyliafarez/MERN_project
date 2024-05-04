@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BackendApi from '../../services/BackendApi';
+import { useNavigate } from 'react-router-dom';
 
 function CreateEvent() {
   const backendApi = new BackendApi();
@@ -11,9 +12,11 @@ function CreateEvent() {
     pictures: [],
     links: [],
     categoryId: '',
+    ownerId: '6634e935c735d50e12fe384d',
     nbPlaces: 0
   });
   const [eventTypes, setEventTypes] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEventTypes = async () => {
@@ -33,6 +36,8 @@ function CreateEvent() {
     try {
       const createdEvent = await backendApi.createEvent(eventData);
       console.log('Événement créé avec succès :', createdEvent);
+      navigate('/events')
+
     } catch (error) {
       console.error('Erreur lors de la création de l\'événement :', error);
     }
