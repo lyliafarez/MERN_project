@@ -49,6 +49,16 @@ interface User {
           setIsSortAsc(true); // Reset to ascending order
         }
       };
+
+      const deleteUser = async (userId: string) => {
+        try {
+          await axios.delete(`http://localhost:8080/users/${userId}`); // DELETE request
+          setUsers(users.filter((user) => user._id !== userId)); // Update state to remove deleted user
+          setSelectedUser(null); // Close popup by clearing the selected user
+        } catch (error) {
+          console.error("Error deleting user:", error);
+        }
+      };
     
       const sortedUsers = [...users].sort((a, b) => {
         let valueA = a[sortField];
@@ -125,58 +135,39 @@ interface User {
                 <div className="border-t border-gray-300 h-1 my-2" /> 
                 <div className="p-4 flex justify-between"> 
                 <table className="w-full table-auto">
-        {/* Table header */}
-        {/* <thead>
-          <tr>
-            <th className="text-left text-white text-lg font-medium py-2 align-middle">Name <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white ml-3 "><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg></th>
-            <th className="text-left text-white text-lg font-medium py-2 align-middle">Email <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white ml-3 "><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg></th>
-            <th className="text-left text-white text-lg font-medium py-2 align-middle">Age <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white ml-3 "><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg></th>
-            <th className="text-left text-white text-lg font-medium py-2 align-middle">Admin <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white ml-3 "><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg></th>
-          </tr>
-        </thead> */}
-        {/* Table body */}
+        
         <tbody className="">
             {filteredUsers.map((user) => (
                     <tr key={user.id} className="">
-                    <td className="px-4 py-2 text-white">
-                        {user.lastname} {user.lastname}
-                    </td>
-                    <td className="px-4 py-2 text-white">
-                        {user.email.toLowerCase()}
-                    </td>
-                    <td className="px-4 py-2 text-white">
-                        {user.age}
-                    </td>
-                    <td className="px-4 py-2 text-white">
-                      {user.isAdmin ? "Admin" : "User"} 
-                    </td>
-                    <td className="px-4 py-2 flex space-x-2">
-                        <button
-                        className="bg-blue-500 text-white px-3 py-2 rounded"
-                        // onClick={() => openPopup(user)}
-                        >
-                        Edit
-                        </button>
-                        <button
-                        className="bg-customRedButton text-white px-3 py-2 rounded"
-                        onClick={() => openPopup(user)}
-                        >
-                        Delete
-                        </button>
-                    </td>
+                      <td className="px-4 py-2 text-white">
+                          {user.name} {user.lastname}
+                      </td>
+                      <td className="px-4 py-2 text-white">
+                          {user.email.toLowerCase()}
+                      </td>
+                      <td className="px-4 py-2 text-white">
+                          {user.age}
+                      </td>
+                      <td className="px-4 py-2 text-white">
+                        {user.isAdmin ? "Admin" : "User"} 
+                      </td>
+                      <td className="px-4 py-2 flex space-x-2">
+                          <button
+                          className="bg-blue-500 text-white px-3 py-2 rounded">
+                          Edit
+                          </button>
+                          <button className="bg-customRedButton text-white px-3 py-2 rounded" onClick={() => openPopup(user)}>
+                            Delete
+                          </button>
+                      </td>
                     </tr>
             ))}
         </tbody>
                 </table>
                     {isPopupOpen && selectedUser && (
-                            <DeletePopup isOpen={isPopupOpen} onClose={closePopup}>
-                                <h2 className="text-lg font-semibold">Delete User</h2>
-                                <p>
-                                Are you sure you want to delete {selectedUser.name} {selectedUser.lastname} ?
-                                </p>
-                                {/* Additional content and buttons */}
-                            </DeletePopup>
-                            )}
+                            <DeletePopup isOpen={isPopupOpen} onDelete={() => {deleteUser(selectedUser._id); setPopupOpen(false); }}>
+                              <h2>Are you sure you want to delete {selectedUser.name} {selectedUser.lastname}?</h2>
+                            </DeletePopup> )}
                 </div> 
             </div>
         </div>
