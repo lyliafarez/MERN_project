@@ -30,14 +30,14 @@ const EditUserForm: React.FC = () => {
       axios
         .get(`http://localhost:8080/users/${id}`)
         .then((response) => {
-          setFormData(response.data); 
+          setFormData(response.data.user); // Extract the "user" from the response
         })
         .catch((err) => {
-          console.error("Error fetching user:", err);
-          setError("Failed to fetch user data."); 
+          setError("Failed to fetch user data.");
         });
     }
-  }, [id]); 
+  }, [id]); // Dependency on the ID
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); 
@@ -63,8 +63,10 @@ const EditUserForm: React.FC = () => {
   if (formData === null) {
     return <div>Loading...</div>; 
   }
+  
 
   return (
+    
     <div className="bg-gray-600 min-h-screen flex justify-center items-center">
       <div className="max-w-md w-full p-8 bg-gray-600 rounded-lg">
         <h1 className="text-2xl mb-4 text-white text-center">Edit user </h1>
