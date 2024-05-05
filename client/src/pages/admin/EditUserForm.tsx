@@ -3,10 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { User } from './UserTypes';
 import AppLayout from '../../Components/Layouts/AppLayout';
+import showSweetAlert from '../../helpers/showSweetAlert';
 
 const EditUserForm: React.FC = () => {
   const { id } = useParams<{ id: string }>(); 
   const navigate = useNavigate(); 
+  
   const [formData, setFormData] = useState<User | null>(null); 
   const [isLoading, setIsLoading] = useState(false); 
   const [error, setError] = useState<string | null>(null); 
@@ -52,6 +54,7 @@ const EditUserForm: React.FC = () => {
           formData 
         );
         navigate('/users', { state: { userModified: true } });
+        showSweetAlert("success","The user is updated successfully !","success","Done")
       }
     } catch (error) {
       console.error("Error updating user:", error);

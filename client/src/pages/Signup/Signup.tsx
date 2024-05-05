@@ -31,7 +31,7 @@ export default function Signup() {
            
             if (user) {
                 // Si l'e-mail existe déjà, afficher un message d'erreur et bloquer la création du compte   
-                setError("Cet email est déjà associé à un compte. Veuillez utiliser un autre email.");
+                setError("This e-mail is associated to an existing user, please change it !");
                 setName("");
                 setLastname("");
                 setAge("");
@@ -53,7 +53,7 @@ export default function Signup() {
         }
         } catch (error) {
             console.log(name,lastname,email,age,password)
-            setError("Erreur lors de la création de l'utilisateur ");
+            setError("Error when creating the user");
             console.error("Erreur lors de la création de l'utilisateur : ", error);
             setName("");
             setLastname("");
@@ -138,7 +138,7 @@ export default function Signup() {
                                     </label>
                                     <input
                                         type={showPassword ? "text" : "password"} 
-                                        placeholder="Enter mot de passe"
+                                        placeholder="Enter password"
                                         autoComplete="off"
                                         name="password"
                                         value={password}
@@ -146,11 +146,11 @@ export default function Signup() {
                                         className="form-control"
                                     />
                                     <button
-                                        className="btn btn-outline-secondary"
+                                        className="btn btn-outline-secondary my-2"
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)} // Inversion de l'état de showPassword lors du clic sur le bouton
                                     >
-                                        {showPassword ? "Cacher" : "Afficher"} {}
+                                        {showPassword ? "Hide" : "Show"} {}
                                     </button>
                                 </div>
 

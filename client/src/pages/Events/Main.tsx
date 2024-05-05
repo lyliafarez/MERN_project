@@ -12,7 +12,7 @@ import DatePicker from "../../Components/DatePicker";
 import Swal from "sweetalert2";
 import showSweetAlert from "../../helpers/showSweetAlert";
 import AppLayout from "../../Components/Layouts/AppLayout";
-
+import axios from "axios";
 export default function Main() {
   const backendApi = new BackendApi();
   const [user, setUser] = useState(null);
@@ -146,6 +146,18 @@ export default function Main() {
     await updateUserEvents()
   };
 
+  const confirmDeleteEvent = async (eventId) => {
+    try {
+      await axios.delete(`http://localhost:8080/events/${eventId}`);
+      console.log('Événement supprimé avec succès.');
+      await updateEventsList();
+      showSweetAlert("success","Event deleted successfully !","success","Done")
+      
+    } catch (error) {
+      console.error('Erreur lors de la suppression de l\'événement :', error);
+    }
+  };
+
   return (
     <AppLayout>
     <div className="mx-8 my-6">
@@ -177,7 +189,7 @@ export default function Main() {
         <a href='/admin/eventtypes' className="px-2 py-2 bg-blue-400 rounded-md text-white">Add an event type</a>
       </div>
 
-      <EventsList key={filteredEvents} events={filteredEvents} handleRegistration={handleRegistration} handleCancellation={handleCancellation} userEvents={userEvents} user={user} />
+      <EventsList key={filteredEvents} events={filteredEvents} handleRegistration={handleRegistration} handleCancellation={handleCancellation} userEvents={userEvents} user={user} confirmDeleteEvent={confirmDeleteEvent} />
     </div>
     </AppLayout>
   );
