@@ -51,11 +51,11 @@ export default function EventCard({ event ,handleRegistration, handleCancellatio
               <>
                 <Link to={`/edit-event/${event._id}`}>
                   <button className="px-2 py-1 text-xs text-white rounded-md bg-yellow-400 hover:bg-yellow-600 hover:text-yellow-200">
-                    Modifier
+                    Edit
                   </button>
                 </Link>
                 <button className="px-2 py-1 text-xs text-white rounded-md bg-red-400 hover:bg-red-600 hover:text-red-300">
-                  Supprimer
+                  Delete
                 </button>
               </>
             ) : (
