@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import bcrypt from "bcryptjs";
 
 export default function Login() {
 
@@ -17,6 +18,14 @@ export default function Login() {
             const response = await axios.get(`http://localhost:8080/users`);
             const users = response.data.users;
 
+            /*const user = users.find(user => user.email === email);
+
+            if (user) {
+                const hashedPassword = await hashPassword(password);
+
+                if (hashedPassword === user.password) {
+                    console.log("Utilisateur connecté :", user);*/
+                    
             const user = users.find(user => user.email === email && user.password === password);
             if (user) {
                 console.log("Utilisateur connecté :", user);
