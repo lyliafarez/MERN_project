@@ -5,7 +5,7 @@ import UserDeleteConfirmationPopup from '../../Components/popups/UserDeleteConfi
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import UserEditPopup from '../../Components/popups/UserEditPopup'; 
-
+import AppLayout from '../../Components/Layouts/AppLayout';
   interface User {
     _id: string; 
     id: number;
@@ -128,7 +128,8 @@ import UserEditPopup from '../../Components/popups/UserEditPopup';
       };
         
     return (
-      <div className="bg-customGrayBlue h-screen">
+      <AppLayout>
+        <div className="bg-customGrayBlue h-screen">
         <div className="p-4">
           <div className="flex items-center justify-between w-full  pt-5"> 
             {/* <div className="w-full flex justify-center"> 
@@ -211,6 +212,8 @@ import UserEditPopup from '../../Components/popups/UserEditPopup';
           </div>
         </div> 
       </div>
+      </AppLayout>
+      
     );
 };
 

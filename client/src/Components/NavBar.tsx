@@ -60,6 +60,9 @@ export default function NavBar() {
                   <a href="/events">List of events</a>
                 </li>
                 <li className="border-b border-gray-400 uppercase">
+                <a href="/users">List of users</a>
+              </li>
+                <li className="border-b border-gray-400 uppercase">
                 <a href="/createEvent">Create an event</a>
               </li>
               </ul>

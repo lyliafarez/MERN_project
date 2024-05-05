@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { User } from './UserTypes';
+import AppLayout from '../../Components/Layouts/AppLayout';
 
 const EditUserForm: React.FC = () => {
   const { id } = useParams<{ id: string }>(); 
@@ -66,8 +67,8 @@ const EditUserForm: React.FC = () => {
   
 
   return (
-    
-    <div className="bg-gray-600 min-h-screen flex justify-center items-center">
+    <AppLayout>
+      <div className="bg-gray-600 min-h-screen flex justify-center items-center">
       <div className="max-w-md w-full p-8 bg-gray-600 rounded-lg">
         <h1 className="text-2xl mb-4 text-white text-center">Edit user </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -107,6 +108,8 @@ const EditUserForm: React.FC = () => {
         </form>
       </div>
     </div>
+    </AppLayout>
+    
   );
 };
 
