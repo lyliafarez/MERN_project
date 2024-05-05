@@ -7,8 +7,8 @@ import 'bootstrap';
 import EventType from './pages/AdminEventType/AdminEventType'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup';
-import CreateEvent from './pages/CreateEvent/CreateEvent'
-
+import CreateEvent from './pages/CreateEvent/CreateEvent';
+import EditEvent from './pages/EditEvent/EditEvent';
 import EditUserForm from './pages/admin/EditUserForm';
 
 
@@ -25,6 +25,7 @@ function App() {
         <Route path="/userEdit/:id" element={<EditUserForm/>} /> 
         <Route path="/events" element={<Main/>}/>
         <Route path="/createEvent" element={<CreateEvent/>}/>
+        <Route path="/edit-event/:eventId" element={<EditEvent/>} />
       </Routes>
     </BrowserRouter>
 

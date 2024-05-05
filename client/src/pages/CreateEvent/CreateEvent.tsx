@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import BackendApi from '../../services/BackendApi';
+import { useNavigate } from 'react-router-dom';
+import AppLayout from '../../Components/Layouts/AppLayout';
 
 function CreateEvent() {
   const backendApi = new BackendApi();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [eventData, setEventData] = useState({
     title: '',
     description: '',
@@ -11,9 +14,11 @@ function CreateEvent() {
     pictures: [],
     links: [],
     categoryId: '',
+    ownerId: user._id,
     nbPlaces: 0
   });
   const [eventTypes, setEventTypes] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEventTypes = async () => {
@@ -33,6 +38,8 @@ function CreateEvent() {
     try {
       const createdEvent = await backendApi.createEvent(eventData);
       console.log('Événement créé avec succès :', createdEvent);
+      navigate('/events')
+
     } catch (error) {
       console.error('Erreur lors de la création de l\'événement :', error);
     }
@@ -47,6 +54,7 @@ function CreateEvent() {
   };
 
   return (
+    <AppLayout>
     <div className="bg-gray-600 min-h-screen flex justify-center items-center">
       <div className="max-w-md w-full p-8 bg-gray-600 rounded-lg">
         <h1 className="text-2xl mb-4 text-white">Créer un événement</h1>
@@ -65,7 +73,7 @@ function CreateEvent() {
           </div>
           <div className="flex flex-col">
             <label className="text-white">Nombre de places :</label>
-            <input type="number" name="nbPlaces" value={eventData.nbPlaces} onChange={handleChange} className="input bg-gray-100 rounded-md" />
+            <input type="number" name="nbPlaces" value={eventData.nbPlaces} onChange={handleChange} className="input bg-gray-100 rounded-md" min="0" />
           </div>
           <div className="flex flex-col">
             <label className="text-white">Adresse:</label>
@@ -73,7 +81,8 @@ function CreateEvent() {
           </div>
           <div className="flex flex-col">
             <label className="text-white">Photos:</label>
-            <input type="text" name="pictures" value={eventData.pictures} onChange={handleChange} className="input bg-gray-100 rounded-md" />
+            {/* <input type="text" name="pictures" value={eventData.pictures} onChange={handleChange} className="input bg-gray-100 rounded-md" /> */}
+            <input type="file" name="pictures" multiple onChange={handleChange} className="input bg-gray-100 rounded-md" />
           </div>
           <div className="flex flex-col">
             <label className="text-white">Liens:</label>
@@ -94,6 +103,7 @@ function CreateEvent() {
         </form>
       </div>
     </div>
+    </AppLayout>
   );
 }
 
