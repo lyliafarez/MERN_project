@@ -8,7 +8,6 @@ import EventType from './pages/AdminEventType/AdminEventType'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup';
 import CreateEvent from './pages/CreateEvent/CreateEvent'
-
 import EditUserForm from './pages/admin/EditUserForm';
 
 
