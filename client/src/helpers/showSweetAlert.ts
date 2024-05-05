@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-const showSweetAlert = (title,text,icon,confirmButtonText)=>{
+const showSweetAlert = (title:string,text:string,icon:string,confirmButtonText:string)=>{
     Swal.fire({
         title: title,
         text: text,

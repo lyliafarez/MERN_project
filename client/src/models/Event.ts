@@ -9,9 +9,9 @@ export default class Event {
     places : number;
     isActive: boolean;
     ownerId:string;
-    categoryId: string;
+    categoryId: object;
 
-    constructor(id: string, title: string, description: string, date:string,address:string,pictures:Array<string>,links:Array<string>,places:number,isActive:boolean,categoryId:string,ownerId:string){
+    constructor(id: string, title: string, description: string, date:string,address:string,pictures:Array<string>,links:Array<string>,places:number,isActive:boolean,categoryId:object,ownerId:string){
         this.id = id;
         this.title = title;
         this.description = description;

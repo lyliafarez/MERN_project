@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {ArrowLeftEndOnRectangleIcon} from "@heroicons/react/24/solid";
+import { ArrowLeftEndOnRectangleIcon } from "@heroicons/react/24/solid";
 
-export default function NavBar() {
+const NavBar: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Suppression l'état de connexion  et des données utilisateur du localStorage
+    // Remove login state and user data from localStorage
     localStorage.removeItem("user");
     localStorage.removeItem("isLoggedIn");
     navigate("/login");
   };
 
   useEffect(() => {
-    // Vérification de l'état de connexion lors du chargement du composant
+    // Check login state on component load
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     if (!isLoggedIn) {
       navigate("/login");
@@ -60,8 +60,8 @@ export default function NavBar() {
                   <a href="/events">List of events</a>
                 </li>
                 <li className="border-b border-gray-400 uppercase">
-                <a href="/createEvent">Create an event</a>
-              </li>
+                  <a href="/createEvent">Create an event</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -87,10 +87,13 @@ export default function NavBar() {
         align-items: center;
       }
     `}</style>
-    <div className="mx-2">
-    <button onClick={handleLogout}><ArrowLeftEndOnRectangleIcon className="h-10 w-10"/></button>
-    </div>
-   
+      <div className="mx-2">
+        <button onClick={handleLogout}>
+          <ArrowLeftEndOnRectangleIcon className="h-10 w-10" />
+        </button>
+      </div>
     </div>
   );
-}
+};
+
+export default NavBar;

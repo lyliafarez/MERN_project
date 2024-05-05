@@ -1,4 +1,4 @@
-const parseLongDateFormat = (dateStr:string):Date => {
+const parseLongDateFormat = (dateStr:Date):Date => {
     return new Date(dateStr);
 }
 

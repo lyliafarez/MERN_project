@@ -1,9 +1,23 @@
+import React from "react";
 import { CalendarIcon } from "@heroicons/react/24/solid";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker } from "react-date-range";
+interface DatePickerProps {
+  showCalendar: boolean;
+  resetCalendar: () => void;
+  state: any[];
+  handleCalendarChange: (ranges: any[]) => void;
+  toggleCalendar: () => void;
+}
 
-export default function DatePicker({ showCalendar, resetCalendar, state, handleCalendarChange, toggleCalendar }) {
+const DatePicker: React.FC<DatePickerProps> = ({
+  showCalendar,
+  resetCalendar,
+  state,
+  handleCalendarChange,
+  toggleCalendar,
+}) => {
   return (
     <div className="relative">
       <div className="flex flex-row">
@@ -35,4 +49,6 @@ export default function DatePicker({ showCalendar, resetCalendar, state, handleC
       )}
     </div>
   );
-}
+};
+
+export default DatePicker;

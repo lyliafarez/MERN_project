@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import BackendApi from "../../services/BackendApi";
-import { EventModel } from "../../../../backend/src/models/Event";
+import Event from "../../models/Event";
+import User from "../../models/User";
 import EventType from "../../models/EventType";
 import EventsList from "../../Components/EventsList";
-//import parseDate from "../../helpers/parseDate";
 import parseLongDateFormat from "../../helpers/parseLongDate";
 import SearchBar from "../../Components/SearchBar";
 import CategorySelector from "../../Components/CategorySelector";
@@ -11,18 +11,18 @@ import DatePicker from "../../Components/DatePicker";
 import showSweetAlert from "../../helpers/showSweetAlert";
 import AppLayout from "../../Components/Layouts/AppLayout";
 
-export default function Main() {
+interface Props {}
+
+const Main: React.FC<Props> = () => {
   const backendApi = new BackendApi();
-  const [user, setUser] = useState(null);
-  const [events, setEvents] = useState<(typeof EventModel)[]>([]);
+  const [user, setUser] = useState<User>();
+  const [events, setEvents] = useState<Event[]>([]);
   const [searchInput, setSearchInput] = useState<string>("");
   const [userEvents, setUserEvents] = useState<string[]>([]);
-  const [filteredEvents, setFilteredEvents] = useState<(typeof EventModel)[]>(
-    []
-  );
+  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
-  const [eventTypes, setEventTypes] = useState<(typeof EventType)[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [eventTypes, setEventTypes] = useState<EventType[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [state, setState] = useState([
     {
       startDate: new Date(),
@@ -30,12 +30,12 @@ export default function Main() {
       key: "selection",
     },
   ]);
-  /* Search Input */
-  const handleSearchInput = (event) => {
+
+  const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const search: string = event.target.value;
     setSearchInput(search);
     if (search.length > 0) {
-      const list = events.filter((item: EventModel) =>
+      const list = events.filter((item: Event) =>
         item.title.toLowerCase().includes(search.toLowerCase())
       );
       setFilteredEvents(list);
@@ -44,18 +44,19 @@ export default function Main() {
     }
   };
 
-  /* date picker */
-  const handleDatePicker = (startDate, endDate) => {
+  const handleDatePicker = (startDate: Date, endDate: Date) => {
     const start = parseLongDateFormat(startDate);
     const end = parseLongDateFormat(endDate);
 
-    const filteredItems = events.filter((item: EventModel) => {
+    const filteredItems = events.filter((item: Event) => {
       const itemDate = new Date(item.date);
+      itemDate.setHours(0, 0, 0, 0);
       return itemDate >= start && itemDate <= end;
     });
 
     setFilteredEvents(filteredItems);
   };
+
   const resetCalendar = () => {
     const date = [
       {
@@ -68,21 +69,22 @@ export default function Main() {
     setFilteredEvents(events);
     setShowCalendar(false);
   };
+
   const toggleCalendar = () => {
     setShowCalendar((prev) => !prev);
   };
 
-  const handleCalendarChange = (item) => {
+  const handleCalendarChange = (item: any) => {
     setState([item.selection]);
   };
+
   useEffect(() => {
     if (state[0].startDate != null) {
       handleDatePicker(state[0].startDate, state[0].endDate);
     }
   }, [state]);
 
-  /* category change */
-  const handleCategoryChange = (event) => {
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const category = event.target.value;
     setSelectedCategory(category);
 
@@ -90,28 +92,26 @@ export default function Main() {
       setFilteredEvents(events);
     } else {
       const list = events.filter(
-        (item: eventModel) => item.categoryId.id === category
+        (item: Event) => item.categoryId.id === category
       );
 
       setFilteredEvents(list);
     }
   };
 
-  const updateUserEvents = async () =>{
-    const storedUser = JSON.parse(localStorage.getItem('user'));
+  const updateUserEvents = async () => {
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
     setUser(storedUser);
-    if(storedUser){
-        const response = await backendApi.getUser(storedUser._id);
-        setUser(response.user)
-        setUserEvents(response.eventIds)
+    if (storedUser) {
+      const response = await backendApi.getUser(storedUser._id);
+      setUser(response.user);
+      setUserEvents(response.eventIds);
     }
-  }
+  };
 
   useEffect(() => {
-   
-    updateUserEvents()
+    updateUserEvents();
     backendApi.getAllEvents().then((response) => {
-        
       setFilteredEvents(response);
       setEvents(response);
     });
@@ -121,62 +121,60 @@ export default function Main() {
     });
   }, []);
 
-
   const updateEventsList = async () => {
     const response = await backendApi.getAllEvents();
     setEvents(response);
     setFilteredEvents(response);
   };
 
-  const handleRegistration = async (form) => {
+  const handleRegistration = async (form: any) => {
     await backendApi.createRegistration(form).then(() => {
-        showSweetAlert("success","You joined the event successfully !","success","Done")
-      });
-    await updateEventsList();
-    await updateUserEvents()
-  };
-
-  const handleCancellation = async (userId:string, eventId:string) => {
-    await backendApi.cancelRegistration(userId,eventId).then(() => {
-          showSweetAlert("info","Your registration is canceled!","info","Done")
+      showSweetAlert("success", "You joined the event successfully !", "success", "Done");
     });
     await updateEventsList();
-    await updateUserEvents()
+    await updateUserEvents();
+  };
+
+  const handleCancellation = async (userId: string, eventId: string) => {
+    await backendApi.cancelRegistration(userId, eventId).then(() => {
+      showSweetAlert("info", "Your registration is canceled!", "info", "Done");
+    });
+    await updateEventsList();
+    await updateUserEvents();
   };
 
   return (
     <AppLayout>
-    <div className="mx-8 my-6">
-      <h1 className="font-bold text-3xl">Events list</h1>
-      {/* search bar and filters */}
-      <div className="flex flex-row mt-6 gap-3">
-        {/* search bar */}
-        <SearchBar
-          searchInput={searchInput}
-          handleSearchInput={handleSearchInput}
+      <div className="mx-4 md:mx-8 my-4 md:my-6">
+        <h1 className="font-bold text-2xl md:text-3xl">Events list</h1>
+        <div className="flex flex-col md:flex-row md:justify-between mt-4 md:mt-6 gap-4">
+          <SearchBar searchInput={searchInput} handleSearchInput={handleSearchInput} />
+          <CategorySelector eventTypes={eventTypes} selectedCategory={selectedCategory} handleCategoryChange={handleCategoryChange} />
+          <DatePicker
+            showCalendar={showCalendar}
+            toggleCalendar={toggleCalendar}
+            state={state}
+            handleCalendarChange={handleCalendarChange}
+            resetCalendar={resetCalendar}
+          />
+          <a href="/createEvent" className="px-2 py-2 bg-blue-400 rounded-md text-white">
+            Add an event
+          </a>
+          <a href="/admin/eventtypes" className="px-2 py-2 bg-blue-400 rounded-md text-white">
+            Add an event type
+          </a>
+        </div>
+        <EventsList
+          key={filteredEvents}
+          events={filteredEvents}
+          handleRegistration={handleRegistration}
+          handleCancellation={handleCancellation}
+          userEvents={userEvents}
+          user={user}
         />
-        {/* category selection */}
-        <CategorySelector
-          eventTypes={eventTypes}
-          selectedCategory={selectedCategory}
-          handleCategoryChange={handleCategoryChange}
-        />
-        {/* date picker */}
-
-        <DatePicker
-          showCalendar={showCalendar}
-          toggleCalendar={toggleCalendar}
-          state={state}
-          handleCalendarChange={handleCalendarChange}
-          resetCalendar={resetCalendar}
-        />
-        {/* Create event button */}
-        <a href='/createEvent' className="px-2 py-2 bg-blue-400 rounded-md text-white">Add an event</a>
-        <a href='/admin/eventtypes' className="px-2 py-2 bg-blue-400 rounded-md text-white">Add an event type</a>
       </div>
-
-      <EventsList key={filteredEvents} events={filteredEvents} handleRegistration={handleRegistration} handleCancellation={handleCancellation} userEvents={userEvents} user={user} />
-    </div>
     </AppLayout>
   );
-}
+};
+
+export default Main;

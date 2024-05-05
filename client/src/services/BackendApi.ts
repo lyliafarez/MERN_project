@@ -1,9 +1,8 @@
 import axios from 'axios';
 import EventType from '../models/EventType';
-import {EventModel }from '../../../backend/src/models/Event';
-import Registration from '../../../backend/src/models/Registration';
-// import { navigate } from 'react-router-dom';
-import User from '../../../backend/src/models/User';
+import Registration from '../models/Registration';
+import User from '../models/User';
+import Event from '../models/Event';
 
 class BackendApi {
     constructor() {
@@ -48,7 +47,7 @@ class BackendApi {
     }
     
     /* Events */
-    async getAllEvents(): Promise<typeof EventModel[]> {
+    async getAllEvents(): Promise<typeof Event[]> {
       try {
         const response = await axios.get( "http://localhost:8080/events");
         return response.data.events;
@@ -58,9 +57,9 @@ class BackendApi {
       }
     }
 
-    async getEventById(eventId: string): Promise<EventModel> {
+    async getEventById(eventId: string): Promise<Event> {
       try {
-          const response = await axios.get<EventModel>(`http://localhost:8080/events/${eventId}`);
+          const response = await axios.get<Event>(`http://localhost:8080/events/${eventId}`);
           return response.data;
       } catch (error) {
           console.error("Erreur lors de la récupération de l'événement : ", error);
@@ -68,9 +67,9 @@ class BackendApi {
       }
     }
 
-    async updateEvent(eventId: string, eventData: Partial<EventModel>): Promise<EventModel> {
+    async updateEvent(eventId: string, eventData: Partial<Event>): Promise<Event> {
       try {
-          const response = await axios.put<EventModel>(`http://localhost:8080/events/${eventId}`,eventData,
+          const response = await axios.put<Event>(`http://localhost:8080/events/${eventId}`,eventData,
               { validateStatus: status => status === 200 } 
           );
           return response.data;
@@ -97,7 +96,7 @@ class BackendApi {
 
     
  
-    async createEvent(eventData) {
+    async createEvent(eventData:Event) {
       try {
         console.log("Création évenement : ",eventData);
         const response = await axios.post('http://localhost:8080/events', { ...eventData, isActive: true });
@@ -143,7 +142,7 @@ class BackendApi {
     /* users */
     async getUser(id:string): Promise<User> {
       try {
-        const response = await axios.get<typeof EventType[]>( `http://localhost:8080/users/${id}`);
+        const response = await axios.get<typeof User>( `http://localhost:8080/users/${id}`);
         return response.data;
       } catch (error) {
         console.error("Erreur lors de la récupération des données : ", error);
