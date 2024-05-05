@@ -4,12 +4,16 @@ import Event from "../../models/Event";
 import User from "../../models/User";
 import EventType from "../../models/EventType";
 import EventsList from "../../Components/EventsList";
+import parseDate from "../../helpers/parseDate";
+//import parseDate from "../../helpers/parseDate";
 import parseLongDateFormat from "../../helpers/parseLongDate";
 import SearchBar from "../../Components/SearchBar";
 import CategorySelector from "../../Components/CategorySelector";
 import DatePicker from "../../Components/DatePicker";
+import Swal from "sweetalert2";
 import showSweetAlert from "../../helpers/showSweetAlert";
 import AppLayout from "../../Components/Layouts/AppLayout";
+import axios from "axios";
 
 interface Props {}
 
@@ -143,6 +147,18 @@ const Main: React.FC<Props> = () => {
     await updateUserEvents();
   };
 
+  const confirmDeleteEvent = async (eventId) => {
+    try {
+      await axios.delete(`http://localhost:8080/events/${eventId}`);
+      console.log('Événement supprimé avec succès.');
+      await updateEventsList();
+      showSweetAlert("success","Event deleted successfully !","success","Done")
+      
+    } catch (error) {
+      console.error('Erreur lors de la suppression de l\'événement :', error);
+    }
+  };
+
   return (
     <AppLayout>
       <div className="mx-4 md:mx-8 my-4 md:my-6">
@@ -171,6 +187,7 @@ const Main: React.FC<Props> = () => {
           handleCancellation={handleCancellation}
           userEvents={userEvents}
           user={user}
+          confirmDeleteEvent={confirmDeleteEvent}
         />
       </div>
     </AppLayout>

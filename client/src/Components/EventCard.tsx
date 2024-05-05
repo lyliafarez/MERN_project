@@ -5,6 +5,8 @@ import defaultImg from "../img/corporate-events.jpg";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import Event from "../models/Event";
 import User from "../models/User";
+import DeletePopup from '../Components/popups/DeletePopup';
+
 
 interface Props {
   event: Event;
@@ -20,11 +22,18 @@ const EventCard: React.FC<Props> = ({
   handleCancellation,
   userEvents,
   user,
+  confirmDeleteEvent
 }) => {
+
   const [showDetails, setShowDetails] = useState(false);
+  const [showEventConfirmation, setShowEventConfirmation] = useState(false);
 
   const handleShowDetails = () => {
     setShowDetails((prev) => !prev);
+  };
+
+  const handleDeleteEvent = () => {
+    setShowEventConfirmation((prev) => !prev);
   };
 
   const register = () => {
@@ -41,6 +50,8 @@ const EventCard: React.FC<Props> = ({
     };
     handleCancellation(form.userId, form.eventId);
   };
+
+ 
 
   return (
     <div className="flex flex-col border-2 border-blue-300 rounded-md">
@@ -86,8 +97,8 @@ const EventCard: React.FC<Props> = ({
                       Modifier
                     </button>
                   </Link>
-                  <button className="px-2 py-1 text-xs text-white rounded-md bg-red-400 hover:bg-red-600 hover:text-red-300">
-                    Supprimer
+                  <button onClick={handleDeleteEvent} className="px-2 py-1 text-xs text-white rounded-md bg-red-400 hover:bg-red-600 hover:text-red-300">
+                    Delete
                   </button>
                 </>
               ) : (
@@ -120,6 +131,11 @@ const EventCard: React.FC<Props> = ({
               )}
             </div>
           </div>
+          {showEventConfirmation && 
+            <DeletePopup isOpen={showEventConfirmation} onDelete={() => confirmDeleteEvent(event._id)} onClose={() => setShowEventConfirmation(false)} >
+              <h2>Are you sure you want to delete the event?</h2>
+            </DeletePopup>
+          }
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { ArrowLeftEndOnRectangleIcon } from "@heroicons/react/24/solid";
 
 const NavBar: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -14,7 +15,9 @@ const NavBar: React.FC = () => {
   };
 
   useEffect(() => {
-    // Check login state on component load
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    setUser(storedUser);
+    // Vérification de l'état de connexion lors du chargement du composant
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     if (!isLoggedIn) {
       navigate("/login");
@@ -59,6 +62,9 @@ const NavBar: React.FC = () => {
                 <li className="border-b border-gray-400 uppercase">
                   <a href="/events">List of events</a>
                 </li>
+               {user.isAdmin && <li className="border-b border-gray-400 uppercase">
+                <a href="/users">List of users</a>
+              </li>}
                 <li className="border-b border-gray-400 uppercase">
                   <a href="/createEvent">Create an event</a>
                 </li>

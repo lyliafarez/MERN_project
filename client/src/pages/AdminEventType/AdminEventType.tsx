@@ -64,7 +64,7 @@ export default function AdminEventType() {
       
       <div className='new-event-type'>
         <div>
-          <div className='flex flex-col items-center new-event-type'>
+          <div className='flex flex-col  new-event-type mx-8'>
             <div className='w-full'>
               <div className='mb-6'>
                 <label htmlFor='label' className='flex block mb-2 text-m font-medium text-gray-900 dark:text-white'>
@@ -75,7 +75,7 @@ export default function AdminEventType() {
                   type='text'
                   value={newEventType?.label}
                   onChange={e => handleInputChange(e)}
-                  className='block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-white-700 dark:border-gray-600 dark:placeholder-white-400 dark:text-black   dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className='block w-1/2 px-1 py-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-white-700 dark:border-gray-600 dark:placeholder-white-400 dark:text-black   dark:focus:ring-blue-500 dark:focus:border-blue-500'
                 />
               </div>
               <div className='mb-6'>
@@ -87,7 +87,7 @@ export default function AdminEventType() {
                   type='text'
                   value={newEventType?.description}
                   onChange={e => handleInputChange(e)}
-                  className='block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-white-700 dark:border-gray-600 dark:placeholder-white-400 dark:text-black   dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className='block w-1/2 p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-white-700 dark:border-gray-600 dark:placeholder-white-400 dark:text-black   dark:focus:ring-blue-500 dark:focus:border-blue-500'
                 />
               </div>
             </div>
@@ -98,7 +98,7 @@ export default function AdminEventType() {
               Confirm
             </button>
           </div>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-8'>
             {eventTypes.map((eventType, index) => (
               <div key={index} className='items-center flex flex-col bg-gray-200 p-4 rounded-lg shadow-md'>
                 <p className='text-gray-800 font-semibold'>{eventType.label}</p>

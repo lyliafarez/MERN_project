@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import bcrypt from "bcryptjs";
 
 export default function Login() {
 
@@ -17,7 +18,15 @@ export default function Login() {
             const response = await axios.get(`http://localhost:8080/users`);
             const users = response.data.users;
 
-            const user = users.find(user => user.email === email && user.password === password);
+            const LoggedUser = users.find(user => user.email === email);
+
+            /*if (user) {
+                const hashedPassword = await hashPassword(password);
+
+                if (hashedPassword === user.password) {
+                    console.log("Utilisateur connecté :", user);*/
+            const isMatch = await bcrypt.compare(password, LoggedUser.password);
+            const user = users.find(user => user.email === email && isMatch);
             if (user) {
                 console.log("Utilisateur connecté :", user);
 
@@ -28,7 +37,7 @@ export default function Login() {
                 localStorage.setItem("user", JSON.stringify(user));
                 navigate('/events');
             } else {
-                setError("Email ou mot de passe incorrect."); 
+                setError("Incorrect credentials !"); 
                 setPassword("");
                 setEmail("");
             }
@@ -68,7 +77,7 @@ export default function Login() {
                                     <div className="input-group">
                                         <input
                                             type={showPassword ? "text" : "password"} 
-                                            placeholder="Enter mot de passe"
+                                            placeholder="Enter mot a password"
                                             autoComplete="off"
                                             name="password"
                                             value={password}
@@ -80,7 +89,7 @@ export default function Login() {
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)} 
                                         >
-                                            {showPassword ? "Cacher" : "Afficher"} 
+                                            {showPassword ? "Hide" : "Show"} 
                                         </button>
                                     </div>
                                 </div>
