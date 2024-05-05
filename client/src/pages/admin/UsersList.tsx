@@ -72,8 +72,8 @@ import UserEditPopup from '../../Components/popups/UserEditPopup';
         let valueB = b[sortField];
     
         if (typeof valueA === 'string') {
-          valueA = valueA.toLowerCase();
-          valueB = valueB.toLowerCase();
+          valueA = valueA?.toLowerCase();
+          valueB = valueB?.toLowerCase();
         }
     
         if (isSortAsc) {
@@ -86,8 +86,8 @@ import UserEditPopup from '../../Components/popups/UserEditPopup';
       //handles the filter user and put the names to lowercase to avoid error
       const filteredUsers = sortedUsers.filter(
         (user) =>
-          user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          user.lastname.toLowerCase().includes(searchQuery.toLowerCase())
+          user.name?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+          user.lastname?.toLowerCase().includes(searchQuery?.toLowerCase())
       );
 
        // Check if the navigation state indicates a user was modified

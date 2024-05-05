@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import bcrypt from "bcryptjs"; 
+
 
 export default function Signup() {
 
@@ -15,7 +17,7 @@ export default function Signup() {
     const [error, setError] = useState(""); 
     const navigate = useNavigate()
 
-    
+
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -36,13 +38,15 @@ export default function Signup() {
                 setPassword("");
                 setEmail("");
             }else{
+
+            const hashedPassword = await bcrypt.hash(password, 10);
             // Si l'e-mail n'existe pas déjà, créer le compte
             const response = await axios.post('http://localhost:8080/users', {
                     name,
                     lastname,
                     email,
                     age,
-                    password
+                    password: hashedPassword
             });
             console.log(response.data);
             navigate('/Login');
@@ -133,7 +137,7 @@ export default function Signup() {
                                         <strong>Password</strong>
                                     </label>
                                     <input
-                                        type="password"
+                                        type={showPassword ? "text" : "password"} 
                                         placeholder="Enter mot de passe"
                                         autoComplete="off"
                                         name="password"

@@ -21,7 +21,7 @@ class EventTypeController {
       res.status(201).json(newEventType);
     } catch (error) {
       console.error("Erreur lors de la création de l'événement : ", error);
-      res.status(500).json({ error: "Erreur lors de la création de l'événement" });
+      res.status(500).json({ error: "Erreur interne du serveur" });
     }
   };
 
