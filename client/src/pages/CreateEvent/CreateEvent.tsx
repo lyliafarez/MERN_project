@@ -64,6 +64,13 @@ function CreateEvent() {
     }
   };
 
+  const handleRemoveImage = (indexToRemove) => {
+    setEventData(prevData => ({
+      ...prevData,
+      pictures: prevData.pictures.filter((_, index) => index !== indexToRemove)
+    }));
+  };
+
   return (
     <AppLayout>
       <div className="bg-gray-600 min-h-screen flex justify-center items-center">
@@ -97,6 +104,7 @@ function CreateEvent() {
                 {eventData.pictures.map((fileURL, index) => (
                   <div key={index} className="relative">
                     <img src={fileURL} alt={`Image ${index}`} className="h-20 w-20 object-cover rounded-md" />
+                    <button type="button" onClick={() => handleRemoveImage(index)} className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 focus:outline-none">X</button>
                   </div>
                 ))}
               </div>
