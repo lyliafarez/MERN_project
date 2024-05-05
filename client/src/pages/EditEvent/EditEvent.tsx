@@ -21,12 +21,14 @@ function EditEvent() {
   const [eventTypes, setEventTypes] = useState([]);
   const [registrations, setRegistrations] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showEventConfirmation, setShowEventConfirmation] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
 
   useEffect(() => {
     const fetchEventData = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/events/${eventId}`);
+        console.log('Données de l\'événement récupérées :', response.data);
         setEventData(response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des détails de l\'événement :', error);
@@ -40,10 +42,10 @@ function EditEvent() {
     const fetchEventTypes = async () => {
       try {
         const fetchedEventTypes = await backendApi.getAllEventTypes();
+        console.log('Types d\'événements récupérés :', fetchedEventTypes);
         setEventTypes(fetchedEventTypes);
-        // console.log(fetchedEventTypes);
       } catch (error) {
-        console.error('Erreur lors de la récupération des types d\'événements:', error);
+        console.error('Erreur lors de la récupération des types d\'événements :', error);
       }
     };
 
@@ -52,37 +54,71 @@ function EditEvent() {
 
   useEffect(() => {
     const fetchRegistrations = async () => {
-        try {
-            const response = await axios.get(`http://localhost:8080/registrations/byEvent/${eventId}`);
-            const registrationsData = response.data.registrations;
-            
-            const registrationsDetails = await Promise.all(registrationsData.map(async (registration) => {
-                const userResponse = await axios.get(`http://localhost:8080/users/${registration.userId}`);
-                const userName = userResponse.data.user.name + " " + userResponse.data.user.lastname;
-                return {
-                    ...registration,
-                    userName: userName
-                };
-            }));
+      try {
+        const response = await axios.get(`http://localhost:8080/registrations/event/${eventId}`);
+        console.log('Inscriptions récupérées :', response.data.registrations);
+        const registrationsData = response.data.registrations;
+        
+        const registrationsDetails = await Promise.all(registrationsData.map(async (registration) => {
+          const userResponse = await axios.get(`http://localhost:8080/users/${registration.userId}`);
+          const userName = userResponse.data.user.name + " " + userResponse.data.user.lastname;
+          return {
+            ...registration,
+            userName: userName
+          };
+        }));
 
-            setRegistrations(registrationsDetails);
-        } catch (error) {
-            console.error('Erreur lors de la récupération des inscriptions :', error);
-        }
+        setRegistrations(registrationsDetails);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des inscriptions :', error);
+      }
     };
 
     fetchRegistrations();
-}, [eventId]);
-
-
+  }, [eventId]);
 
   const handleSubmit = async () => {
     try {
       await axios.put(`http://localhost:8080/events/${eventId}`, eventData);
+      console.log('Événement mis à jour avec succès :', eventData);
       navigate('/events');
     } catch (error) {
       console.error('Erreur lors de la mise à jour de l\'événement :', error);
     }
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    const uploadedImages = files.map((file) => URL.createObjectURL(file));
+    setEventData(prevData => ({
+        ...prevData,
+        pictures: [...prevData.pictures, ...uploadedImages]
+    }));
+};
+
+  const handleRemoveImage = (indexToRemove) => {
+    setEventData(prevData => ({
+        ...prevData,
+        pictures: prevData.pictures.filter((_, index) => index !== indexToRemove)
+    }));
+  };
+
+  const handleDeleteEvent = async () => {
+    setShowEventConfirmation(true);
+  };
+
+  const confirmDeleteEvent = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/events/${eventId}`);
+      console.log('Événement supprimé avec succès.');
+      navigate('/events');
+    } catch (error) {
+      console.error('Erreur lors de la suppression de l\'événement :', error);
+    }
+  };
+
+  const cancelDeleteEvent = () => {
+    setShowEventConfirmation(false);
   };
 
   const handleChange = (e) => {
@@ -95,8 +131,9 @@ function EditEvent() {
 
   const handleCancelRegistration = async (userId) => {
     try {
-      await backendApi.cancelRegistration(userId, eventId);
-      const response = await axios.get(`http://localhost:8080/registrations/byEvent/${eventId}`);
+      await axios.delete(`http://localhost:8080/registrations/${eventId}/${userId}`);
+      const response = await axios.get(`http://localhost:8080/registrations/event/${eventId}`);
+      console.log('Inscriptions après annulation :', response.data.registrations);
       setRegistrations(response.data.registrations);
     } catch (error) {
       console.error('Erreur lors de l\'annulation de l\'inscription :', error);
@@ -155,8 +192,15 @@ function EditEvent() {
 
             <div className="flex flex-col">
                 <label className="text-white edit-event-label">Photos:</label>
-                <input type="file" name="pictures" multiple onChange={handleChange} className="input bg-gray-100 rounded-md" />
+                {eventData.pictures.map((pictureUrl, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                        <img src={pictureUrl} alt={`Image ${index}`} className="w-32 h-32 object-cover rounded-md" />
+                        <button onClick={() => handleRemoveImage(index)} className="btn bg-red-500 text-white rounded-md">Supprimer</button>
+                    </div>
+                ))}
+                <input type="file" name="pictures" multiple onChange={handleImageChange} className="input bg-gray-100 rounded-md" />
             </div>
+
             
             <div className="flex flex-col">
                 <label className="text-white edit-event-label">Liens:</label>
@@ -194,7 +238,16 @@ function EditEvent() {
                 </div>
             )}
 
+            {showEventConfirmation  && (
+              <div className="text-white ml-2">
+                <p>Êtes-vous sûr de vouloir supprimer cet événement ?</p>
+                <button onClick={confirmDeleteEvent} className="btn bg-red-500 text-white rounded-md">Oui</button>
+                <button onClick={cancelDeleteEvent} className="btn bg-blue-500 text-white rounded-md">Non</button>
+              </div>
+            )}
+
             <button onClick={handleSubmit} className="btn bg-blue-500 text-white rounded-md w-full float-left">Enregistrer</button>
+            <button onClick={handleDeleteEvent} className="btn bg-red-500 text-white rounded-md w-full float-left">Supprimer l'événement</button>
           </div>
         </div>
       </div>
