@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs"; 
-
+import showSweetAlert from "../../helpers/showSweetAlert";
 
 export default function Signup() {
 
@@ -50,6 +50,7 @@ export default function Signup() {
             });
             console.log(response.data);
             navigate('/Login');
+            showSweetAlert("success", "User created successfully !", "success", "Done");
         }
         } catch (error) {
             console.log(name,lastname,email,age,password)
