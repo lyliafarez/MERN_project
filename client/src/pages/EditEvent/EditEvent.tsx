@@ -24,16 +24,18 @@ function EditEvent() {
   const [showEventConfirmation, setShowEventConfirmation] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
 
+  const fetchEventData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/events/${eventId}`);
+      //console.log('Données de l\'événement récupérées :', response.data);
+      setEventData(response.data);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des détails de l\'événement :', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchEventData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/events/${eventId}`);
-        console.log('Données de l\'événement récupérées :', response.data);
-        setEventData(response.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des détails de l\'événement :', error);
-      }
-    };
+    
 
     fetchEventData();
   }, [eventId]);
@@ -42,7 +44,7 @@ function EditEvent() {
     const fetchEventTypes = async () => {
       try {
         const fetchedEventTypes = await backendApi.getAllEventTypes();
-        console.log('Types d\'événements récupérés :', fetchedEventTypes);
+        //console.log('Types d\'événements récupérés :', fetchedEventTypes);
         setEventTypes(fetchedEventTypes);
       } catch (error) {
         console.error('Erreur lors de la récupération des types d\'événements :', error);
@@ -50,13 +52,13 @@ function EditEvent() {
     };
 
     fetchEventTypes();
-  }, [backendApi]);
+  }, []);
 
   useEffect(() => {
     const fetchRegistrations = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/registrations/event/${eventId}`);
-        console.log('Inscriptions récupérées :', response.data.registrations);
+        //console.log('Inscriptions récupérées :', response.data.registrations);
         const registrationsData = response.data.registrations;
         
         const registrationsDetails = await Promise.all(registrationsData.map(async (registration) => {
@@ -80,10 +82,10 @@ function EditEvent() {
   const handleSubmit = async () => {
     try {
       await axios.put(`http://localhost:8080/events/${eventId}`, eventData);
-      console.log('Événement mis à jour avec succès :', eventData);
+      //console.log('Événement mis à jour avec succès :', eventData);
       navigate('/events');
     } catch (error) {
-      console.error('Erreur lors de la mise à jour de l\'événement :', error);
+      //console.error('Erreur lors de la mise à jour de l\'événement :', error);
     }
   };
 
@@ -131,7 +133,11 @@ function EditEvent() {
 
   const handleCancelRegistration = async (userId) => {
     try {
-      await axios.delete(`http://localhost:8080/registrations/${eventId}/${userId}`);
+      console.log(eventId)
+      await backendApi.cancelRegistration(userId, eventId).then(() => {
+         
+      });
+      await fetchEventData();
       const response = await axios.get(`http://localhost:8080/registrations/event/${eventId}`);
       console.log('Inscriptions après annulation :', response.data.registrations);
       setRegistrations(response.data.registrations);

@@ -51,7 +51,7 @@ const EventCard: React.FC<Props> = ({
     handleCancellation(form.userId, form.eventId);
   };
 
- 
+
 
   return (
     <div className="flex flex-col border-2 border-blue-300 rounded-md">
@@ -113,9 +113,10 @@ const EventCard: React.FC<Props> = ({
                         RSVP
                       </button>
                     )}
-                  {event.nbPlaces != 0 &&
+                  {(event.nbPlaces != 0 ||(event.nbPlaces == 0 && userEvents.includes(event._id)) )&&
                     new Date() < new Date(event.date) &&
-                    userEvents.includes(event._id) && (
+                    userEvents.includes(event._id) &&
+                     (
                       <button
                         onClick={cancelRegistration}
                         className="px-2 py-1 text-xs text-white rounded-md bg-red-400 hover:bg-red-600 hover:text-red-300"
@@ -127,6 +128,14 @@ const EventCard: React.FC<Props> = ({
                   new Date() > new Date(event.date)
                     ? "Event closed"
                     : null}
+                    { event?.ownerId?._id == user?._id && !user.isAdmin &&
+                     <Link to={`/edit-event/${event._id}`}>
+                     <button className="px-2 py-1 text-xs text-white rounded-md bg-yellow-400 hover:bg-yellow-600 hover:text-yellow-200">
+                       Modifier
+                     </button>
+                   </Link>
+
+                    }
                 </>
               )}
             </div>

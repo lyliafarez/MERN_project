@@ -64,7 +64,7 @@ const EventDetails: React.FC<Props> = ({ handleClose, event }) => {
                         </div>
                         <div>
                         <span className="text-base font-semibold">Owner of the event :</span>
-                        <span>{`${event.ownerId.lastname} ${event.ownerId.name}`}</span>
+                        <span>{`${event?.ownerId?.lastname} ${event?.ownerId?.name}`}</span>
                         </div>
                     </div>
                  

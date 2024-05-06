@@ -118,11 +118,12 @@ class RegistrationController {
       const eventId = req.params.eventId;
 
       // Supprimer l'inscription
+      await EventModel.findByIdAndUpdate(eventId, { $inc: { nbPlaces: 1 } });
       const result = await Registration.deleteOne({ userId, eventId });
 
       if (result.deletedCount === 1) {
         // Incrémenter le nombre de places disponibles de l'événement
-        await EventModel.findByIdAndUpdate(eventId, { $inc: { nbPlaces: 1 } });
+        
 
         res.status(200).json({ message: 'Inscription supprimée avec succès' });
       } else {

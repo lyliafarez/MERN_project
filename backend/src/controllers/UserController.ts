@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { User } from "../models/User";
 import { Registration } from "../models/Registration";
-
+import { EventModel } from "../models/Event";
 /**
  * Logique de nos différente routes
  */
@@ -125,12 +125,33 @@ class UserController {
    * @param res
    * @param next
    */
-  delete = async (req: Request, res: Response, next: Function) => {
+  /* delete = async (req: Request, res: Response, next: Function) => {
     res
       .status(200)
       .send(await User.findByIdAndDelete(req.params.id))
       .end();
     next();
+  }; */
+  delete = async (req: Request, res: Response, next: Function) => {
+    try {
+      // Delete events owned by the user
+      await EventModel.deleteMany({ ownerId: req.params.id });
+  
+      // Delete registrations of the user
+      await Registration.deleteMany({ userId: req.params.id });
+  
+      // Delete the user
+      const deletedUser = await User.findByIdAndDelete(req.params.id);
+  
+      if (!deletedUser) {
+        return res.status(404).send({ message: "User not found" });
+      }
+  
+      res.status(200).send({ message: "User deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      res.status(500).send({ error: "Internal server error" });
+    }
   };
 }
 

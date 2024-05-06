@@ -130,6 +130,7 @@ export default function Signup() {
                                         value={age}
                                         onChange={(e) => setAge(e.target.value)}
                                         className="form-control"
+                                        min="0"
                                     />
                                 </div>
 

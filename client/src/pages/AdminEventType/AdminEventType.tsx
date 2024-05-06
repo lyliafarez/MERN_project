@@ -9,6 +9,7 @@ import AppLayout from '../../Components/Layouts/AppLayout';
 export default function AdminEventType() {
   
   const backendApi = new BackendApi();
+  const [user, setUser] = useState<User>(JSON.parse(localStorage.getItem("user") || "{}"));
   const [eventTypes, setEventTypes] = useState<EventType[]>([]);
   const [newEventType, setNewEventType] = useState<Partial<EventType>>({
     label: '',
@@ -104,7 +105,7 @@ export default function AdminEventType() {
                 <p className='text-gray-800 font-semibold'>{eventType.label}</p>
                 <p className='text-gray-600'>{eventType.description}</p>
                 <div className='flex'>
-                  <button
+                  { user.isAdmin && <button
                     className='flex justify-center items-center mt-2 h-10 w-20 bg-gradient-to-r from-[#fb7185] via-[#e11d48] to-[#be123c] hover:shadow-xl hover:shadow-red-500 hover:scale-105 duration-300 hover:from-[#be123c] hover:to-[#fb7185] text-white font-semibold rounded-md mx-auto'
                     onClick={() => deleteEventTypeById(eventType.id)}
                   >
@@ -125,7 +126,7 @@ export default function AdminEventType() {
                       </svg>
                       Button
                     </svg>
-                  </button>
+                  </button>}
                 </div>
               </div>
             ))}
